@@ -15,6 +15,10 @@
   "keywords": [],
   "author": "AthanasiosChourlias",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Athanasioschourlias/pesonal-web-page-v3-server/issues"
+  },
+  "homepage": "#",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/jest": "^27.4.0",
