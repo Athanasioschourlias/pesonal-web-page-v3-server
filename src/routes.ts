@@ -1,4 +1,5 @@
 import * as express from "express"
+import {addNewArticle} from "./controllers/admin.controller"
 
 // Main router object
 const routes = express.Router()
@@ -21,9 +22,11 @@ const agro = express.Router() //For the connected apps like weather on fields an
 // Main router object usage
 routes.use("/api/v1", apiRoutes)
 
+//TODO - Implement a token secret logic so not everyone can hit our endpoint if he finds them
+
 // API router usage
-apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/admin",admin)
+apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/blog",blog)
 apiRoutes.use("/agro",agro)
 
@@ -34,11 +37,13 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-
+admin.get("/admin/addArticle", addNewArticle)
 
 /** Utilities **/
+utilities.get("")
 
 /** Blog **/
+
 
 /** Agro **/
 
