@@ -33,6 +33,14 @@ apiRoutes.use("/agro",agro)
 
 //Sub router usage
 
+/** Admin Routes **/
+
+
+/** Utilities **/
+
+/** Blog **/
+
+/** Agro **/
 
 
 export = routes
