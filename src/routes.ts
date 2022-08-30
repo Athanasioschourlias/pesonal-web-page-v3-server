@@ -1,5 +1,11 @@
 import * as express from "express"
 import {addNewArticle} from "./controllers/admin.controller"
+import {
+	deleteArticles,
+	editArticles,
+	getAllArticles
+} from "./controllers/blog.controller"
+import {getCv} from "./service/utillities.service"
 
 // Main router object
 const routes = express.Router()
@@ -37,15 +43,20 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-admin.get("/addArticle", addNewArticle)
+admin.put("/article", addNewArticle)
+admin.delete("/article", deleteArticles)
+admin.patch("/article", editArticles)
 
 /** Utilities **/
-utilities.get("")
+utilities.get("/cv", getCv)
+utilities.put("/form")//figure out whether the forms will be stored in the db or send by mail or both.
+
 
 /** Blog **/
-
+blog.get("/articles", getAllArticles)
 
 /** Agro **/
+//TODO - This will be used in the future when the agro project will be on the way to display data and many more.
 
 
 export = routes

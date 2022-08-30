@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/src/server.js",
+    "dev": "npm run build && npm start",
+    "prod": "echo \"not implemented yet bc the steps are not known\"",
     "prebuild": "rm -rf ./build",
     "build": "tsc",
     "postbuild": "cp -r package.json package-lock.json env/.env assets build/ && cd build && npm ci --only=production",
