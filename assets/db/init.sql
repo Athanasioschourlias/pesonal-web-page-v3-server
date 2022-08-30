@@ -34,5 +34,5 @@ SET default_tablespace = '';
 CREATE USER page WITH PASSWORD 'serveruserpass';
 CREATE DATABASE webpageserver;
 GRANT ALL PRIVILEGES ON DATABASE webpageserver TO page;
-\c botpanel
+\c page
 
