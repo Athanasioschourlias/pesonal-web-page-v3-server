@@ -37,7 +37,7 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-admin.get("/admin/addArticle", addNewArticle)
+admin.get("/addArticle", addNewArticle)
 
 /** Utilities **/
 utilities.get("")
