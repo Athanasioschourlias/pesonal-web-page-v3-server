@@ -3,10 +3,10 @@
 
   "development": {
     "driver": "pg",
-    "user": "panel",
-    "password": "paneluserpass",
-    "host": "panel-db",
-    "database": "botpanel",
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
     "port": 5432,
     "ssl": false,
     "schema": "public"
@@ -14,21 +14,21 @@
 
   "test": {
     "driver": "pg",
-    "user": "panel",
-    "password": "paneluserpass",
-    "host": "localhost",
-    "database": "botpanel",
-    "port": 5433,
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
+    "port": 5432,
     "ssl": false,
     "schema": "public"
   },
 
   "production": {
     "driver": "pg",
-    "user": "panel",
-    "password": "paneluserpass",
-    "host": "panel-db",
-    "database": "botpanel",
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
     "port": 5432,
     "ssl": false,
     "schema": "public"
