@@ -9,7 +9,7 @@
     "prod": "echo \"not implemented yet bc the steps are not known\"",
     "prebuild": "rm -rf ./build",
     "build": "tsc",
-    "postbuild": "cp -r package.json package-lock.json env/.env assets src/ build/ && cd build && npm ci --only=production",
+    "postbuild": "cp -r package.json package-lock.json src/.env assets src/ build/ && cd build && npm ci --only=production",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
     "test:dev": "jest",
