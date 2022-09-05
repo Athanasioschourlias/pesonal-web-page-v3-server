@@ -13,7 +13,7 @@
 
 - ###Development enviroment
 
-  - To start the server in a development enviroment -> ``docker-compose -p <servername> --env-file ../env/.env -f docker-compose.yml up --build -d``
+  - To start the server in a development enviroment -> ``docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d``
   - To Stop and remove the containers -> ``docker compose -p <servername> down ``
 
 - ###Production
