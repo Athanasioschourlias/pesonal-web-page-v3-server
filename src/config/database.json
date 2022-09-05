@@ -1,0 +1,36 @@
+{
+  "defaultEnv": {"ENV": "NODE_ENV"},
+
+  "development": {
+    "driver": "pg",
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
+    "port": 5432,
+    "ssl": false,
+    "schema": "public"
+  },
+
+  "test": {
+    "driver": "pg",
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
+    "port": 5432,
+    "ssl": false,
+    "schema": "public"
+  },
+
+  "production": {
+    "driver": "pg",
+    "user": "page",
+    "password": "serveruserpass",
+    "host": "page-db",
+    "database": "webpageserver",
+    "port": 5432,
+    "ssl": false,
+    "schema": "public"
+  }
+}

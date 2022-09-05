@@ -17,5 +17,5 @@ app.use(express.json())
 app.use("/", routes)
 
 app.listen(config.PORT, function() {
-	logger.info(`Webchat server listening on port ${config.PORT}`)
+	logger.info(`Thanos web page server is listening on port -> ${config.PORT}`)
 })

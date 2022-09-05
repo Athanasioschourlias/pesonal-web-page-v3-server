@@ -3,7 +3,7 @@ import * as dotenv from "dotenv"
 import logger from "../common/logger"
 
 // Parsing the env file.
-dotenv.config({ path: path.join(__dirname, "../..", ".env") })
+dotenv.config({ path: path.join(__dirname, "../", ".env") })
 
 // Interface to load env variables
 // Note these variables can possibly be undefined

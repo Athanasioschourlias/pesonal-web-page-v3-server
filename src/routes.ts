@@ -1,4 +1,11 @@
 import * as express from "express"
+import {addNewArticle} from "./controllers/admin.controller"
+import {
+	deleteArticles,
+	editArticles,
+	getAllArticles
+} from "./controllers/blog.controller"
+import {getCv} from "./service/utillities.service"
 
 // Main router object
 const routes = express.Router()
@@ -21,9 +28,11 @@ const agro = express.Router() //For the connected apps like weather on fields an
 // Main router object usage
 routes.use("/api/v1", apiRoutes)
 
+//TODO - Implement a token secret logic so not everyone can hit our endpoint if he finds them
+
 // API router usage
-apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/admin",admin)
+apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/blog",blog)
 apiRoutes.use("/agro",agro)
 
@@ -33,6 +42,21 @@ apiRoutes.use("/agro",agro)
 
 //Sub router usage
 
+/** Admin Routes **/
+admin.put("/article", addNewArticle)
+admin.delete("/article", deleteArticles)
+admin.patch("/article", editArticles)
+
+/** Utilities **/
+utilities.get("/cv", getCv)
+utilities.put("/form")//figure out whether the forms will be stored in the db or send by mail or both.
+
+
+/** Blog **/
+blog.get("/articles", getAllArticles)
+
+/** Agro **/
+//TODO - This will be used in the future when the agro project will be on the way to display data and many more.
 
 
 export = routes
