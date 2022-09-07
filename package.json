@@ -6,10 +6,10 @@
   "scripts": {
     "start": "node build/src/server.js",
     "dev": "npm run build && npm run migrate -- --config src/config/database.json -e development && npm start",
-    "prod": "echo \"not implemented yet bc the steps are not known\"",
+    "prod": "npm run build && ./scripts/wait-for.sh && npm run migrate -- --config src/config/database.json -e productio && npm start",
     "prebuild": "rm -rf ./build",
     "build": "tsc",
-    "postbuild": "cp -r package.json package-lock.json src/.env assets src/ build/ && cd build && npm ci --only=production",
+    "postbuild": "cp -r package.json package-lock.json src/.env assets src/ build/ && cd build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
     "test:dev": "jest",
