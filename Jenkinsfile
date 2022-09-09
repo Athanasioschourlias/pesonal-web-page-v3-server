@@ -3,7 +3,7 @@ pipeline {
    stages {
        stage('Example Build') {
            steps {
-               echo 'Hello World!!!'
+               sh 'npm ci && npm run build'
            }
        }
        stage('Example Deploy') {
