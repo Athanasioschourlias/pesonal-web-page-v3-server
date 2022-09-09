@@ -3,7 +3,7 @@ pipeline {
    stages {
        stage('Example Build') {
            steps {
-               sh 'pwd'
+               sh 'pwd && la -la'
            }
        }
        stage('Example Deploy') {
