@@ -1,14 +1,18 @@
 pipeline {
    agent any
+
+   tools {nodejs "node"}
+
    stages {
        stage('Example Build') {
            steps {
-               sh 'pwd && ls -la'
+               sh ' npm install '
+                sh ' npm run build '
            }
        }
        stage('Example Deploy') {
            when {
-               branch 'production'
+               branch 'master'
                environment name: 'DEPLOY_TO', value: 'production'
            }
            steps {
