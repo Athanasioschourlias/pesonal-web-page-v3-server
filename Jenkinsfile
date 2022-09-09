@@ -2,7 +2,7 @@ pipeline {
    agent any
 
    tools {
-        "Web-page-Node" '17.0.0'
+        "nodejs" '17.0.0'
    }
    stages {
        stage('Example Build') {
