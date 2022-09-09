@@ -1,11 +1,14 @@
 pipeline {
    agent any
 
+   tools {
+        nodejs '17.0.0'
+   }
+
    stages {
        stage('Example Build') {
            steps {
-               sh ' npm install '
-                sh ' npm run build '
+               sh ' npm --version '
            }
        }
        stage('Example Deploy') {
