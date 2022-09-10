@@ -15,6 +15,10 @@
     
     1. cd to the dockerfiles
     2. run -> `docker build -f ./<dockerfile-name> -t athanasioschourlias/webpage-server:[tag] ../../` (The "../../", is setting the docker context for the build.)
+  
+  - Pushing an image to the registry
+    
+    1. RUN -> `docker push athanasioschourlias/webpage-server:[tagname]`
 
 - ###Development enviroment
 
