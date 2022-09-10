@@ -1,0 +1,27 @@
+ARG version=14.17.1-alpine
+
+FROM node:${version} AS builder
+WORKDIR /usr/src/app
+COPY package*.json ./
+COPY tsconfig.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:${version}
+ENV NODE_ENV production
+WORKDIR /usr/src/app
+
+RUN chown node:node .
+USER node
+COPY --chown=node:node package*.json ./
+RUN npm ci --production
+
+# App files
+COPY --chown=node:node --from=builder /usr/src/app/build ./build
+# Migration files
+COPY --chown=node:node ./migrations ./migrations
+# Scripts
+COPY --chown=node:node ./scripts ./scripts
+EXPOSE 80
+CMD [ "npm", "run", "prod" ]
