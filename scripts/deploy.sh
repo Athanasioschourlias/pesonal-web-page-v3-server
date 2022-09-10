@@ -38,6 +38,9 @@ rm -rf ../client
 cp -r "$SCRIPT_DIR/../../$CLIENTFILENAME/dist" "../client"
 echo "Done building client!!!"
 
+#TODO - Add one more step in order to run the docker-compose
+#TODO - for development or the production version if we are running on production
+
 
 #If script runs successfully exiting with code 0
 exit 0
