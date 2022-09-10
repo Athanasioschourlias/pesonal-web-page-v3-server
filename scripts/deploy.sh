@@ -16,14 +16,28 @@ fi
 #Deleting the previews server build and rebuilding it so we will have the latest version
 #and then we point our script to the root folder of the project if this fails we exit with exit code 1
 rm -rf "../build" && cd .. && npm run build || exit 1
+echo "Done Building Server!!"
 
 #Checking if the client dir exists where we should have it
 if [[ ! -d "$SCRIPT_DIR/../../$CLIENTFILENAME" ]]
 then
-  echo "The client name is not seted right or you dont have the client at the right location!"
+  echo "The client name is not set right or you dont have the client at the right location!"
 fi
 
 cd "$SCRIPT_DIR/../../$CLIENTFILENAME"
 
-echo $( ls )
+###AT THE CLIENT FILE###
+# Update client
+git pull
+# Build client for production
+npm ci
+npm run build
 
+cd "$SCRIPT_DIR"
+rm -rf ../client
+cp -r "$SCRIPT_DIR/../../$CLIENTFILENAME/dist" "../client"
+echo "Done building client!!!"
+
+
+#If script runs successfully exiting with code 0
+exit 0
