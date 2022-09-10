@@ -57,3 +57,21 @@
      1. We can also run a specific number of migration scripts by writing -> ```db-migrate down -c <number> --config './src/config/database.json' -e '<env>'```
   
   3. If we want now to execute all the down migrations at once we can run -> ```db-migrate reset --config './src/config/database.json' -e '<env>'``` 
+
+## Jenkins
+
+---
+
+
+## Ansible
+
+---
+
+
+## Kubernetes
+
+---
+
+## Production deployment
+
+---
