@@ -71,6 +71,10 @@
 
 ---
 
+- To know the status of jenkins:<br />`sudo service jenkins status`
+- To start the jenkins: <br /> `sudo service jenkins start`
+- To stop jenkins:<br /> `sudo service jenkins stop`
+- To restart jenkins<br />`sudo service jenkins restart`
 
 ## Ansible
 
