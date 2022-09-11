@@ -5,6 +5,14 @@ pipeline {
         nodejs "17.0.0"
    }
    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git branch: 'develop', url: 'https://github.com/tsadimas/django3-sampe-project.git'
+
+            }
+        }
+
        stage('Example Build') {
            steps {
                sh ' npm --version '
