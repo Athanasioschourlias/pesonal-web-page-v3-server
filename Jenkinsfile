@@ -16,7 +16,7 @@ pipeline {
                environment name: 'DEPLOY_TO', value: 'production'
            }
            steps {
-               echo 'Deploying!!'
+               echo 'Deploying'
            }
        }
    }
