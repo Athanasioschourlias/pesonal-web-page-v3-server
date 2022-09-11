@@ -4,7 +4,7 @@ pipeline {
    stages {
         stage('Test') {
                    steps {
-                       nodejs(nodeJSInstallationName: 'NodeJS 17.0.0') {
+                       nodejs(nodeJSInstallationName: '17.0.0') {
                                            sh 'npm --version'
                        }
                    }
