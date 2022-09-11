@@ -2,7 +2,7 @@ pipeline {
    agent any
 
    node {
-       env.NODEJS_HOME = "${tool 'Node 6.x'}"
+       env.NODEJS_HOME = "${tool 'Node 7.x'}"
        // on linux / mac
        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
        sh 'npm --version'
