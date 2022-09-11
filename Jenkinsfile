@@ -1,13 +1,10 @@
 pipeline {
    agent any
 
-   tools {
-        nodejs "17.0.0"
-   }
    stages {
        stage('Example Build') {
            steps {
-               sh ' npm --version '
+               sh ' git clone https://github.com/Athanasioschourlias/pesonal-web-page-v3-server.git'
            }
        }
        stage('Example Deploy') {
