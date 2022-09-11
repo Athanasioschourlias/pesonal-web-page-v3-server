@@ -6,8 +6,9 @@ pipeline {
                    steps {
                        nodejs(nodeJSInstallationName: 'Node 7.0.0') {
                                            sh 'npm --version'
-                                       }
-               }
+                       }
+                   }
+        }
        stage('Example Deploy') {
            when {
                branch 'master'
