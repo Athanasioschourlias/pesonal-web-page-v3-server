@@ -11,6 +11,15 @@
     - Re-taging a local image -> ```docker tag <existing-image> <hub-user>/<already-created-repo-name>[:<tag>]```
     - By committing changes -> ```docker tag <existing-container> <hub-user>/<already-created-repo-name>[:<tag>]```
 
+  - To build an image from the server
+    
+    1. cd to the dockerfiles
+    2. run -> `docker build -f ./<dockerfile-name> -t athanasioschourlias/webpage-server:[tag] ../../` (The "../../", is setting the docker context for the build.)
+  
+  - Pushing an image to the registry
+    
+    1. RUN -> `docker push athanasioschourlias/webpage-server:[tagname]`
+
 - ###Development enviroment
 
   - To start the server in a development enviroment -> ``docker-compose -p <servername> --env-file ../env/.env -f docker-compose.yml up --build -d``
@@ -57,3 +66,21 @@
      1. We can also run a specific number of migration scripts by writing -> ```db-migrate down -c <number> --config './src/config/database.json' -e '<env>'```
   
   3. If we want now to execute all the down migrations at once we can run -> ```db-migrate reset --config './src/config/database.json' -e '<env>'``` 
+
+## Jenkins
+
+---
+
+
+## Ansible
+
+---
+
+
+## Kubernetes
+
+---
+
+## Production deployment
+
+---
