@@ -1,12 +1,18 @@
 pipeline {
    agent any
 
+   node {
+       env.NODEJS_HOME = "${tool 'Node 6.x'}"
+       // on linux / mac
+       env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
+       sh 'npm --version'
+   }
+
+
    stages {
         stage('Test') {
                    steps {
-                       nodejs(nodeJSInstallationName: 'Node 7.0.0') {
-                                           sh 'npm --version'
-                       }
+                       sh 'echo Hello!!!'
                    }
         }
        stage('Example Deploy') {
