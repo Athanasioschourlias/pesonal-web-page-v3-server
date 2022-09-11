@@ -9,6 +9,15 @@ pipeline {
 
             }
         }
+        stage('Test') {
+                   steps {
+                       sh '''
+                            pwd
+                            ls
+                            npm ci
+                           '''
+                   }
+               }
        stage('Example Deploy') {
            when {
                branch 'master'
