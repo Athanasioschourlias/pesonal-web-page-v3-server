@@ -2,21 +2,11 @@ pipeline {
    agent any
 
    stages {
-        stage('Build') {
-            steps {
-                // Get some code from a GitHub repository
-                git branch: 'master', url: 'https://github.com/Athanasioschourlias/pesonal-web-page-v3-server.git'
-
-            }
-        }
         stage('Test') {
                    steps {
-                       sh '''
-                            pwd
-                            ls
-                            npm ci
-                           '''
-                   }
+                       nodejs(nodeJSInstallationName: 'Node 7.0.0') {
+                                           sh 'npm --version'
+                                       }
                }
        stage('Example Deploy') {
            when {
