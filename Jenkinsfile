@@ -7,7 +7,7 @@ pipeline {
    stages {
        stage('Example Build') {
            steps {
-               sh ' npm --version '
+               sh ' npm version '
            }
        }
        stage('Example Deploy') {
