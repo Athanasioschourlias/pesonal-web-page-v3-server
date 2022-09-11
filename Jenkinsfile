@@ -12,12 +12,6 @@ pipeline {
 
             }
         }
-
-       stage('Example Build') {
-           steps {
-               sh ' npm --version '
-           }
-       }
        stage('Example Deploy') {
            when {
                branch 'master'
