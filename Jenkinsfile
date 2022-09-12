@@ -13,10 +13,10 @@ pipeline {
        stage('Example Deploy') {
            when {
                branch 'master'
-               environment name: 'DEPLOY_TO', value: 'production'
+               environment name: 'NODE_ENV', value: 'production'
            }
            steps {
-               echo 'Deploying'
+
            }
        }
    }
