@@ -10,14 +10,5 @@ pipeline {
                        }
                    }
         }
-       stage('Example Deploy') {
-           when {
-               branch 'master'
-               environment name: 'NODE_ENV', value: 'production'
-           }
-           steps {
-
-           }
-       }
    }
 }
