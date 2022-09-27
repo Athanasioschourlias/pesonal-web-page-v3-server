@@ -15,7 +15,7 @@ pipeline {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
                         npm run build
-                        '''
+                       '''
                 }
             }
         }
