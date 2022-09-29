@@ -16,6 +16,7 @@ pipeline {
                     sh '''
                         echo "NODE_ENV=development\nPORT=3000\nEXPOSED_PORT=3000\nTOKEN_SECRET=1234\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=securepwd" >> src/.env
                         npm run build
+
                        '''
                 }
             }
