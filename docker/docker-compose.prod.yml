@@ -1,0 +1,37 @@
+version: "3.9"
+
+volumes:
+  webpage-db-data:
+  client-images:
+
+services:
+  page-db:
+    container_name: personal_web_page_dev_db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: securepwd #user postgres
+    volumes:
+      - webpage-db-data:/var/lib/postgresql/data
+      - ../assets/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  page-server:
+    container_name: personal_webpage_dev_server
+    #we can use images from the registry but because in the dev enviroment we will make many changes its more usefull to rebuild the image every time
+    build:
+      context: .. #Very important it refers where the root will be for the build.
+      dockerfile: docker/dockerfiles/Dockerfile.prod
+    environment:
+      TOKEN_SECRET: "2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&" #Default is 123
+      NODE_ENV: "production"
+#    image: athanasioschourlias/webpageserver-dev:alpha-0.0.1 #We are taking the images from the registry based on tags for the versioning
+    ports:
+      - "${EXPOSED_PORT}:${PORT}" #container port (PORT, from .env), assigned to given host port, the exposed from the dockerfile (EXPOSED_PORT)
+    volumes:
+      - client-images:/usr/src/app/build/client/images
+    depends_on:
+      - page-db
+    links:
+      - page-db
