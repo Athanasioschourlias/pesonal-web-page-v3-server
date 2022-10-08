@@ -30,6 +30,7 @@ if(existsSync(path.join(__dirname, "../client"))) {
 
 	app.get("/", (_req, res) => {
 		res.sendFile(path.join(__dirname, "../client/index.html"))
+		logger.info("Serving Static Files")
 	})
 }
 

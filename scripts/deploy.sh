@@ -38,9 +38,12 @@ rm -rf ../client
 cp -r "$SCRIPT_DIR/../../$CLIENTFILENAME/dist" "../client"
 echo "Done building client!!!"
 
-#TODO - Add one more step in order to run the docker-compose
-#TODO - for development or the production version if we are running on production
 
+
+#if [[ ! -d "$SCRIPT_DIR/../docker/docker-compose.prod.yml" ]]
+#then
+#  docker-compose -p thanos-page --env-file ../src/.env -f ../docker/docker-compose.prod.yml up --build -d
+#fi
 
 #If script runs successfully exiting with code 0
 exit 0
