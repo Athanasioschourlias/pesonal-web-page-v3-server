@@ -31,9 +31,9 @@
   docker compose -p <servername> down 
   ```
 
-- ###Production
+- ###Testing Production
 
-  - ###Strting the Page
+  - ###Starting the Page
   1. Go into the scripts folder(important for context) and run the deployment script `./deploy.sh`
   2. Uncomment the last line of the script or run manually the docker compose command
   ```
@@ -88,11 +88,10 @@
 
 ---
 
-
-## Ansible
-
----
-
+- To know the status of jenkins:<br />`sudo service jenkins status`
+- To start the jenkins: <br /> `sudo service jenkins start`
+- To stop jenkins:<br /> `sudo service jenkins stop`
+- To restart jenkins<br />`sudo service jenkins restart`
 
 ## Kubernetes
 
@@ -101,3 +100,7 @@
 ## Production deployment
 
 ---
+
+In order to deploy our system in a production like environment we need to refer to the following repository
+
+> https://github.com/Athanasioschourlias/personal-web-page-config
