@@ -1,27 +1,22 @@
 //Article types
-type  article = {
+type  devstack_article = {
 	title: string,
-	article_description: string,
 	//The images attributes will be just the name of the image that is already
 	// uploaded or will be sanctimoniously uploaded with a standar prefix that
 	// points to the clients articles folder with all the photos.
-	first_img: string,
-	second_img: string,
-	in_service: string,
-	mcu: string,
-	relative_hardware: string,
-	software: string,
-	libraries_used: string
-
+	dev_stack: JSON,
+	article_text: string,
+	ref_citing: JSON,
+	date: Date
 }
 
-type articleData = {
-	articles: article[] | null,
+type devstack_articleData = {
+	articles: devstack_article[] | null,
 	statusCode: number,
 	errmessage?: string
 }
 
 export {
-	article,
-	articleData
+	devstack_article,
+	devstack_articleData
 }

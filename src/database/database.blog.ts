@@ -1,8 +1,8 @@
-import {article} from "../types/db models/blog"
+import {hardware_article} from "../types/db models/hardware"
 import db from "./adapter/database.postgress.adapter"
 
 
-export function fetchAllArticlesDb(): Promise<article[] | null>{
+export function fetchAllArticlesDb(): Promise<hardware_article[] | null>{
 
 	let query = `
 					SELECT * 
@@ -18,7 +18,7 @@ export function fetchAllArticlesDb(): Promise<article[] | null>{
 		db.query(query, params)
 			.then((result) => {
 				if(result.rowCount > 0)
-					return resolve(result.rows as article[])
+					return resolve(result.rows as hardware_article[])
 				resolve(null)
 			})
 			.catch((error) => {
