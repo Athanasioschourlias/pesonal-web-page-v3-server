@@ -1,11 +1,9 @@
-import {hardware_article, hardware_articleData} from "../types/db models/hardware"
 import {wrapPromise} from "../common/utils"
-import {fetchAllArticlesDb} from "../database/database.blog"
 
 
 export async function getArticles(): Promise<hardware_articleData> {
 
-	const [err, rows] = await wrapPromise(fetchAllArticlesDb())
+	const [err, rows] = await wrapPromise()
 
 	if(err) {
 		return {
