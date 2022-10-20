@@ -5,8 +5,10 @@ declare global {
 			NODE_ENV: "development" | "production" | "test"
 			PORT: string
 			TOKEN_SECRET: string
-			POSTGRES_USER: string
-			POSTGRES_PASSWORD: string
+			DB_CONN_STRING: string
+			DB_NAME: string
+			TECHNICAL_ARTICLES_COLLECTION_NAME: string,
+			HARDWARE_ARTICLES_COLLECTION_NAME: string
 		}
 	}
 	namespace Express {

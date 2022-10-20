@@ -27,10 +27,6 @@ RUN npm ci --production
 
 # App files
 COPY --chown=node:node --from=builder /usr/src/app/build ./build
-# Migration files
-COPY --chown=node:node ./migrations ./migrations
-# Scripts
-COPY --chown=node:node --chmod=700 ./scripts ./scripts
 # Client
 COPY --chown=node:node ./client ./build/client
 EXPOSE 80
