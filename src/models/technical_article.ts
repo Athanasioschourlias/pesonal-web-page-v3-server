@@ -8,7 +8,7 @@ export class technical_article {
 		public article_text_1: string,
 		public article_text_2: string,
 		public ref_citing: JSON,
-		public date: Date,
+		public date?: Date,
 		public id?: ObjectId) {
 
 	}
@@ -21,7 +21,7 @@ export class hardware_article {
 		public second_image: string,
 		public article_text: string,
 		public tech_spec: JSON,
-		public date: Date,
+		public date?: Date,
 		public id?: ObjectId) {
 
 	}

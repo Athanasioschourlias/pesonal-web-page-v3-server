@@ -1,9 +1,15 @@
 import * as express from "express"
-import {addNewArticle} from "./controllers/admin.controller"
 import {
-	deleteArticle,
-	editArticle,
-	getAllHardwareArticles, getAllTechnicalArticles, getHardwareArticleById, getTechnicalArticleById
+	addHardwareArticle,
+	addTechnicalArticle,
+	deleteHardwareArticleById,
+	deleteTechnicalArticleById,
+	editHardwareArticle,
+	editTechnicalArticle,
+	getAllHardwareArticles,
+	getAllTechnicalArticles,
+	getHardwareArticleById,
+	getTechnicalArticleById
 } from "./controllers/blog.controller"
 import {getCv} from "./service/utillities.service"
 
@@ -43,9 +49,14 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-admin.put("/article", addNewArticle)
-admin.delete("/article", deleteArticle)
-admin.patch("/article", editArticle)
+admin.post("/articles/tech_article", addTechnicalArticle)
+admin.post("/articles/hardware_article", addHardwareArticle)
+
+admin.delete("/articles/hardware_article", deleteHardwareArticleById)
+admin.delete("/articles/tech_article", deleteTechnicalArticleById)
+
+admin.put("/articles/tech_article", editTechnicalArticle)
+admin.put("/articles/hardware_article", editHardwareArticle)
 
 /** Utilities **/
 utilities.get("/cv", getCv)
@@ -53,10 +64,10 @@ utilities.put("/form")//figure out whether the forms will be stored in the db or
 
 
 /** Blog **/
-blog.get("/articles/hardware", getAllHardwareArticles)
-blog.get("/articles/hardware/:id", getHardwareArticleById)
-blog.get("/articles/devstack", getAllTechnicalArticles)
-blog.get("/articles/devstack/:id", getTechnicalArticleById)
+blog.get("/articles/hardware_articles", getAllHardwareArticles)
+blog.get("/articles/hardware_article", getHardwareArticleById)
+blog.get("/articles/tech_articles", getAllTechnicalArticles)
+blog.get("/articles/tech_article", getTechnicalArticleById)
 
 /** Agro **/
 //TODO - This will be used in the future when the agro project will be on the way to display data and many more.
