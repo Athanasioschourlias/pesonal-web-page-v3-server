@@ -27,6 +27,8 @@ RUN npm ci --production
 
 # App files
 COPY --chown=node:node --from=builder /usr/src/app/build ./build
+#Downloadable Content
+COPY --chown=node:node ./assets ./build/assets
 # Client
 COPY --chown=node:node ./client ./build/client
 EXPOSE 80

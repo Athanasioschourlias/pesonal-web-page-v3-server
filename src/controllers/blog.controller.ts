@@ -11,6 +11,8 @@ import {
 } from "../service/blog.service"
 import {hardware_article, technical_article} from "../models/technical_article"
 
+//TODO - add schema check
+
 export async function getAllHardwareArticles(_req: Request, res: Response): Promise<void> {
 
 	const [err, result] = await wrapPromise(getHardwareArticles())
@@ -155,13 +157,13 @@ export async function editHardwareArticle(req: Request, res: Response): Promise<
 		res.status(500).send("No body for the new article provided")
 	}
 
-	if(!req.params.id) {
+	if(!req.query.id) {
 		res.status(500).send("Missing Id value")
 	}
 
 
 	const [err, result] = await wrapPromise(
-		putHardwareArticle(req.params.body as unknown as hardware_article, req.params.id)
+		putHardwareArticle(req.body as unknown as hardware_article, String(req.query.id))
 	)
 
 	if(err || !result) {
@@ -179,8 +181,12 @@ export async function editTechnicalArticle(req: Request, res: Response): Promise
 		res.status(500).send("No body for the new article provided")
 	}
 
+	if(!req.query.id) {
+		res.status(500).send("Missing Id value")
+	}
+
 	const [err, result] = await wrapPromise(
-		putTechnicalArticle(req.params.body as unknown as technical_article, req.params.id)
+		putTechnicalArticle(req.body as unknown as technical_article, String(req.query.id))
 	)
 
 	if(err || !result) {

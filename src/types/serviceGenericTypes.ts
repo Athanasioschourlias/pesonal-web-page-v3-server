@@ -7,6 +7,15 @@ type article = {
 	errorMessage?: string
 }
 
+type form = {
+	name: string | null,
+	mail: string | null,
+	phone?: string,
+	text: string
+
+}
+
 export {
-	article
+	article,
+	form
 }

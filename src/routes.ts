@@ -11,7 +11,8 @@ import {
 	getHardwareArticleById,
 	getTechnicalArticleById
 } from "./controllers/blog.controller"
-import {getCv} from "./service/utillities.service"
+import {getAllForms, getCv, storeFormResults} from "./controllers/utilities.controller"
+
 
 // Main router object
 const routes = express.Router()
@@ -58,9 +59,11 @@ admin.delete("/articles/tech_article", deleteTechnicalArticleById)
 admin.put("/articles/tech_article", editTechnicalArticle)
 admin.put("/articles/hardware_article", editHardwareArticle)
 
+admin.get("/forms", getAllForms)
+
 /** Utilities **/
 utilities.get("/cv", getCv)
-utilities.put("/form")//figure out whether the forms will be stored in the db or send by mail or both.
+utilities.post("/form", storeFormResults)//figure out whether the forms will be stored in the db or send by mail or both.
 
 
 /** Blog **/

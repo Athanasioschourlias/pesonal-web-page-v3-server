@@ -7,8 +7,9 @@ declare global {
 			TOKEN_SECRET: string
 			DB_CONN_STRING: string
 			DB_NAME: string
-			TECHNICAL_ARTICLES_COLLECTION_NAME: string,
+			TECHNICAL_ARTICLES_COLLECTION_NAME: string
 			HARDWARE_ARTICLES_COLLECTION_NAME: string
+			FORMS_COLLECTION_NAME: string
 		}
 	}
 	namespace Express {

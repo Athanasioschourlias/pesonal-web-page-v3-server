@@ -151,16 +151,18 @@ export async function putTechnicalArticle(tech_article: technical_article, id: s
 		if(!collections.technical_article)
 			return reject(null)
 
+		console.log(tech_article)
+
 		try {
 			collections.technical_article
 				.updateOne(
-					{_id: new Object(id)},
+					{_id: new ObjectID(id)},
 					{$set: tech_article})
 				.then((res) => {
 					if(res)
-						return resolve("The Article created successfully")
+						return resolve("The Article edit was successful")
 					else
-						return reject("Failed to create the article")
+						return reject("Failed to edit the article")
 				})
 		} catch (error) {
 			return reject(`failed to retrieve item from collection -> ${error}`)
@@ -180,13 +182,13 @@ export async function putHardwareArticle(hardware_article: hardware_article, id:
 		try {
 			collections.hardware_article
 				.updateOne(
-					{_id: new Object(id)},
+					{_id: new ObjectID(id)},
 					{$set: hardware_article})
 				.then((res) => {
 					if(res)
-						return resolve("The Article created successfully")
+						return resolve("The Article edit was successful")
 					else
-						return reject("Failed to create the article")
+						return reject("Failed to edit the article")
 				})
 		} catch (error) {
 			return reject(`failed to retrieve item from collection -> ${error}`)
