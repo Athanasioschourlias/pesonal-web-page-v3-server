@@ -5,6 +5,7 @@ import packageJson from "../package.json"
 import config from "./config/config"
 import {existsSync} from "fs"
 import path from "path"
+import {connectToDatabase} from "./service/database.service"
 
 const environment = config.NODE_ENV || "development"
 logger.info(`Initializing thanos webpage Server version: ${packageJson.version}. Enviroment: ${environment}`)
@@ -15,8 +16,6 @@ app.use(express.json())
 
 //Error Handler
 //TODO-implement an error handler
-
-app.use("/", routes)
 
 /**
  * Here multiple things are happening:
@@ -34,6 +33,14 @@ if(existsSync(path.join(__dirname, "../client"))) {
 	})
 }
 
-app.listen(config.PORT, function() {
-	logger.info(`Thanos web page server is listening on port -> ${config.PORT}`)
-})
+connectToDatabase()
+	.then(() => {
+		app.use("/", routes)
+
+		app.listen(config.PORT, function() {
+			logger.info(`Thanos web page server is listening on port -> ${config.PORT}`)
+		})
+	})
+	.catch((error: Error) => {
+		logger.error(`Databae connection failed -> ${error}`)
+	})

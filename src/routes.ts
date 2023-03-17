@@ -1,11 +1,18 @@
 import * as express from "express"
-import {addNewArticle} from "./controllers/admin.controller"
 import {
-	deleteArticles,
-	editArticles,
-	getAllArticles
+	addHardwareArticle,
+	addTechnicalArticle,
+	deleteHardwareArticleById,
+	deleteTechnicalArticleById,
+	editHardwareArticle,
+	editTechnicalArticle,
+	getAllHardwareArticles,
+	getAllTechnicalArticles,
+	getHardwareArticleById,
+	getTechnicalArticleById
 } from "./controllers/blog.controller"
-import {getCv} from "./service/utillities.service"
+import {getAllForms, getCv, storeFormResults} from "./controllers/utilities.controller"
+
 
 // Main router object
 const routes = express.Router()
@@ -26,7 +33,7 @@ const agro = express.Router() //For the connected apps like weather on fields an
 
 
 // Main router object usage
-routes.use("/api/v1", apiRoutes)
+routes.use("/api/v1", apiRoutes, express.json())
 
 //TODO - Implement a token secret logic so not everyone can hit our endpoint if he finds them
 
@@ -43,18 +50,27 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-admin.put("/article", addNewArticle)
-admin.delete("/article", deleteArticles)
-admin.patch("/article", editArticles)
+admin.post("/articles/tech_article", addTechnicalArticle)
+admin.post("/articles/hardware_article", addHardwareArticle)
+
+admin.delete("/articles/hardware_article", deleteHardwareArticleById)
+admin.delete("/articles/tech_article", deleteTechnicalArticleById)
+
+admin.put("/articles/tech_article", editTechnicalArticle)
+admin.put("/articles/hardware_article", editHardwareArticle)
+
+admin.get("/forms", getAllForms)
 
 /** Utilities **/
 utilities.get("/cv", getCv)
-utilities.put("/form")//figure out whether the forms will be stored in the db or send by mail or both.
+utilities.post("/form", storeFormResults)//figure out whether the forms will be stored in the db or send by mail or both.
 
 
 /** Blog **/
-blog.get("/articles/hardware", getAllArticles)
-blog.get("/articles/devstack", getAllArticles)
+blog.get("/articles/hardware_articles", getAllHardwareArticles)
+blog.get("/articles/hardware_article", getHardwareArticleById)
+blog.get("/articles/tech_articles", getAllTechnicalArticles)
+blog.get("/articles/tech_article", getTechnicalArticleById)
 
 /** Agro **/
 //TODO - This will be used in the future when the agro project will be on the way to display data and many more.

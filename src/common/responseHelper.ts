@@ -3,11 +3,21 @@ import { Response } from "express"
 export function handleServerError(
 	res: Response,
 	code: number,
-	message = "Something went wrong"
+	message?: string
 ): void {
-	res.statusCode = code
-	res.send({
-		success: false,
-		err: message
-	})
+	if(message) {
+		res.statusCode = code
+		res.send({
+			success: false,
+			err: message
+		})
+	} else {
+		res.statusCode = code
+		res.send({
+			success: false,
+			err: "Something went wrong"
+		})
+	}
+
+
 }

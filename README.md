@@ -28,7 +28,7 @@
   ```
   - To Stop and remove the containers 
   ```
-  docker compose -p <servername> down 
+  docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d
   ```
 
 - ###Testing Production
