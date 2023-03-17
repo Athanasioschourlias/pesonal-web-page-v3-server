@@ -53,7 +53,8 @@ utilities.put("/form")//figure out whether the forms will be stored in the db or
 
 
 /** Blog **/
-blog.get("/articles", getAllArticles)
+blog.get("/articles/hardware", getAllArticles)
+blog.get("/articles/devstack", getAllArticles)
 
 /** Agro **/
 //TODO - This will be used in the future when the agro project will be on the way to display data and many more.

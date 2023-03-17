@@ -1,11 +1,10 @@
-import {article, articleData} from "../types/db models/blog"
+import {hardware_article, hardware_articleData} from "../types/db models/hardware"
 import {wrapPromise} from "../common/utils"
 import {fetchAllArticlesDb} from "../database/database.blog"
 
 
-export async function getArticles(): Promise<articleData> {
+export async function getArticles(): Promise<hardware_articleData> {
 
-	//TODO- IN the future check for token
 	const [err, rows] = await wrapPromise(fetchAllArticlesDb())
 
 	if(err) {
@@ -25,7 +24,7 @@ export async function getArticles(): Promise<articleData> {
 	}
 
 	return {
-		articles: rows as article[],
+		articles: rows as hardware_article[],
 		statusCode: 200,
 	}
 

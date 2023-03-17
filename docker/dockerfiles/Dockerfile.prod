@@ -1,0 +1,47 @@
+ARG version=14.17.1-alpine
+ARG NODE_ENV=production
+
+# This is a good practice if you have builds that use different stack and need a different docker image
+# And this is how we can use a separate temporary image for compilation step.
+FROM node:${version} AS builder
+WORKDIR /usr/src/app
+COPY package.json ./
+COPY package-lock.json ./
+COPY tsconfig.json ./
+RUN npm ci
+COPY . .
+RUN [ "npm", "run", "build" ]
+
+FROM node:${version}
+# This can be overwriten from inside the dockerfile
+ENV NODE_ENV $NODE_ENV
+
+# Copy files as a non-root user. The `node` user is built in the Node image.
+WORKDIR /usr/src/app
+RUN chown node:node .
+USER node
+
+COPY --chown=node:node package.json ./
+COPY --chown=node:node package-lock.json ./
+RUN npm ci --production
+
+# App files
+COPY --chown=node:node --from=builder /usr/src/app/build ./build
+# Migration files
+COPY --chown=node:node ./migrations ./migrations
+# Scripts
+COPY --chown=node:node --chmod=700 ./scripts ./scripts
+# Client
+COPY --chown=node:node ./client ./build/client
+EXPOSE 80
+
+# Is a good practice to avoid using the npm command as command to start our app in dockerfiles
+# and that is because npm does NOT pass SIGTERM OS signal to Node process and bc of that node is NOT
+# able to do a proper clean up before exit, docker and k8's send SIGTERM to container process when they want to stop it.
+# Many things like database connections and libraries may depent on SIGTERM and this can lead to many issues.
+# CMD [ "node", "./build/src/server.js" ]
+CMD [ "npm", "run", "prod" ]
+
+
+
+

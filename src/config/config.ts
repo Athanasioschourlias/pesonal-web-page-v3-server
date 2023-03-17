@@ -12,12 +12,16 @@ interface ENV {
 	NODE_ENV: string | undefined;
 	PORT: number | undefined;
 	TOKEN_SECRET: string | undefined;
+	POSTGRES_USER: string | undefined;
+	POSTGRES_PASSWORD: string | undefined;
 }
 
 interface Config {
 	NODE_ENV: string;
 	PORT: number;
 	TOKEN_SECRET: string;
+	POSTGRES_USER: string;
+	POSTGRES_PASSWORD: string;
 }
 
 // Loading process.env as ENV interface
@@ -26,7 +30,9 @@ const getConfig = (): ENV => {
 	return {
 		NODE_ENV: process.env.NODE_ENV,
 		PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
-		TOKEN_SECRET: process.env.TOKEN_SECRET
+		TOKEN_SECRET: process.env.TOKEN_SECRET,
+		POSTGRES_USER: process.env.POSTGRES_USER,
+		POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD
 	}
 }
 
