@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/src/server.js",
-    "dev": "npm start",
+    "dev": "npm run build && npm start",
     "preprod": "echo 'not implemented yet'",
     "prod": "npm run start",
     "prebuild": "rm -rf ./build",

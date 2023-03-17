@@ -1,6 +1,7 @@
 import path from "path"
 import * as dotenv from "dotenv"
 import logger from "../common/logger"
+import * as process from "process"
 
 // Parsing the env file.
 dotenv.config({ path: path.join(__dirname, "../", ".env") })
@@ -12,16 +13,23 @@ interface ENV {
 	NODE_ENV: string | undefined;
 	PORT: number | undefined;
 	TOKEN_SECRET: string | undefined;
-	POSTGRES_USER: string | undefined;
-	POSTGRES_PASSWORD: string | undefined;
+	DB_CONN_STRING: string;
+	DB_NAME: string;
+	TECHNICAL_ARTICLES_COLLECTION_NAME: string;
+	HARDWARE_ARTICLES_COLLECTION_NAME: string;
+	FORMS_COLLECTION_NAME: string;
+
 }
 
 interface Config {
 	NODE_ENV: string;
 	PORT: number;
 	TOKEN_SECRET: string;
-	POSTGRES_USER: string;
-	POSTGRES_PASSWORD: string;
+	DB_CONN_STRING: string;
+	DB_NAME: string;
+	TECHNICAL_ARTICLES_COLLECTION_NAME: string;
+	HARDWARE_ARTICLES_COLLECTION_NAME: string;
+	FORMS_COLLECTION_NAME: string;
 }
 
 // Loading process.env as ENV interface
@@ -31,8 +39,11 @@ const getConfig = (): ENV => {
 		NODE_ENV: process.env.NODE_ENV,
 		PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
 		TOKEN_SECRET: process.env.TOKEN_SECRET,
-		POSTGRES_USER: process.env.POSTGRES_USER,
-		POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD
+		DB_CONN_STRING: process.env.DB_CONN_STRING,
+		DB_NAME:process.env.DB_NAME,
+		TECHNICAL_ARTICLES_COLLECTION_NAME:process.env.TECHNICAL_ARTICLES_COLLECTION_NAME,
+		HARDWARE_ARTICLES_COLLECTION_NAME:process.env.HARDWARE_ARTICLES_COLLECTION_NAME,
+		FORMS_COLLECTION_NAME:process.env.FORMS_COLLECTION_NAME
 	}
 }
 

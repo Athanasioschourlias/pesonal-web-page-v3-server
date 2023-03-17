@@ -28,7 +28,6 @@ export async function getTechArticles(): Promise<technical_article[] | null> {
 
 }
 
-
 export async function fetchTechnicalArticleById(id: string): Promise<technical_article | null> {
 
 	return new Promise((resolve, reject) => {

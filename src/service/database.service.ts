@@ -32,5 +32,7 @@ export async function connectToDatabase () {
 	collections.hardware_article = hardware_article_Collection
 	collections.forms = froms_collection
 
-	logger.info(`Successfully connected to database: ${db.databaseName} and collection: ${technical_article_Collection.collectionName}`)
+	logger.info(`Successfully connected to database: ${db.databaseName} 
+	and collections: ${technical_article_Collection.collectionName} & ${hardware_article_Collection.collectionName} & ${froms_collection.collectionName}`
+	)
 }
