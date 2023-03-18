@@ -51,3 +51,22 @@ export async function fetchArticlesByCategory(req: Request, res: Response): Prom
 
 }
 
+export async function fetchAllAnailableCategories(_req: Request, res: Response): Promise<void> {
+
+	//TODO - make it dynamic
+	// const [err, result] = await wrapPromise(fetchCollections())
+	//
+	// if(err || !result) {
+	// 	return handleServerError(res, 500, String(err))
+	// }
+
+	res.statusCode = 200
+	res.send({
+		"Software": "software_article",
+		"3D Printing": "printing_article",
+		"Robotics": "robotics_article",
+		"Computer Hardware": "computer_hardware_article"
+	})
+
+
+}

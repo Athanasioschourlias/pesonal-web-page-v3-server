@@ -1,5 +1,6 @@
 import * as express from "express"
 import {
+	fetchAllAnailableCategories,
 	fetchAllArticles,
 	fetchArticlesByCategory
 
@@ -61,6 +62,7 @@ utilities.post("/form", storeFormResults)//figure out whether the forms will be 
 /** Blog **/
 blog.get("/articles/all", fetchAllArticles)
 blog.get("/articles/category", fetchArticlesByCategory)
+blog.get("/available_categories", fetchAllAnailableCategories)
 
 /** Agro **/
 //TODO - This will be used in the future when the agro project will be on the way to display data and many more.
