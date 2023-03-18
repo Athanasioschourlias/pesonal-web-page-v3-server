@@ -1,8 +1,13 @@
-import {hardware_article, technical_article} from "../models/technical_article"
+import {articles} from "../models/technical_article"
 
+type ArticleType =
+	"software_article" |
+	"printing_article" |
+	"robotics_article" |
+	"computer_hardware_article"
 
 type article = {
-	article: technical_article | hardware_article | technical_article[] | hardware_article[],
+	article: articles | articles[],
 	statusCode: number,
 	errorMessage?: string
 }
@@ -17,5 +22,6 @@ type form = {
 
 export {
 	article,
+	ArticleType,
 	form
 }

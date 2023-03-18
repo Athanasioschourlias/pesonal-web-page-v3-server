@@ -5,8 +5,10 @@ import logger from "../common/logger"
 
 // Global Variables
 export const collections: {
-	technical_article?: mongoDB.Collection,
-	hardware_article?: mongoDB.Collection,
+	software_article?: mongoDB.Collection,
+	printing_article?: mongoDB.Collection,
+	robotics_article?: mongoDB.Collection,
+	computer_hardware_article?: mongoDB.Collection,
 	forms?: mongoDB.Collection
 } = {}
 
@@ -21,18 +23,29 @@ export async function connectToDatabase () {
 	const db: mongoDB.Db = client.db(process.env.DB_NAME)
 
 	//Initializing collections
-	const technical_article_Collection: mongoDB.Collection =
-		db.collection(process.env.TECHNICAL_ARTICLES_COLLECTION_NAME)
-	const hardware_article_Collection: mongoDB.Collection =
-		db.collection(process.env.HARDWARE_ARTICLES_COLLECTION_NAME)
-	const froms_collection: mongoDB.Collection =
-		db.collection(process.env.FORMS_COLLECTION_NAME)
+	const software_article_Collection: mongoDB.Collection =
+		db.collection("software_articles")
 
-	collections.technical_article = technical_article_Collection
-	collections.hardware_article = hardware_article_Collection
+	const hardware_article_Collection: mongoDB.Collection =
+		db.collection("computer_hardware_articles")
+
+	const robotics_article_Collection: mongoDB.Collection =
+		db.collection("robotics_articles")
+
+	const printing_article_Collection: mongoDB.Collection =
+		db.collection("printing_articles")
+
+	const froms_collection: mongoDB.Collection =
+		db.collection("forms")
+
+	collections.software_article = software_article_Collection
+	collections.printing_article = printing_article_Collection
+	collections.robotics_article = robotics_article_Collection
+	collections.computer_hardware_article = hardware_article_Collection
+
 	collections.forms = froms_collection
 
 	logger.info(`Successfully connected to database: ${db.databaseName} 
-	and collections: ${technical_article_Collection.collectionName} & ${hardware_article_Collection.collectionName} & ${froms_collection.collectionName}`
+	and collections: `
 	)
 }

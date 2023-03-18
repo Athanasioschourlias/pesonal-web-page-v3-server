@@ -15,10 +15,6 @@ interface ENV {
 	TOKEN_SECRET: string | undefined;
 	DB_CONN_STRING: string;
 	DB_NAME: string;
-	TECHNICAL_ARTICLES_COLLECTION_NAME: string;
-	HARDWARE_ARTICLES_COLLECTION_NAME: string;
-	FORMS_COLLECTION_NAME: string;
-
 }
 
 interface Config {
@@ -27,9 +23,6 @@ interface Config {
 	TOKEN_SECRET: string;
 	DB_CONN_STRING: string;
 	DB_NAME: string;
-	TECHNICAL_ARTICLES_COLLECTION_NAME: string;
-	HARDWARE_ARTICLES_COLLECTION_NAME: string;
-	FORMS_COLLECTION_NAME: string;
 }
 
 // Loading process.env as ENV interface
@@ -40,10 +33,7 @@ const getConfig = (): ENV => {
 		PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
 		TOKEN_SECRET: process.env.TOKEN_SECRET,
 		DB_CONN_STRING: process.env.DB_CONN_STRING,
-		DB_NAME:process.env.DB_NAME,
-		TECHNICAL_ARTICLES_COLLECTION_NAME:process.env.TECHNICAL_ARTICLES_COLLECTION_NAME,
-		HARDWARE_ARTICLES_COLLECTION_NAME:process.env.HARDWARE_ARTICLES_COLLECTION_NAME,
-		FORMS_COLLECTION_NAME:process.env.FORMS_COLLECTION_NAME
+		DB_NAME:process.env.DB_NAME
 	}
 }
 
