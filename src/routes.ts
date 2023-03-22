@@ -6,6 +6,7 @@ import {
 
 } from "./controllers/blog.controller"
 import {getAllForms, getCv, storeFormResults} from "./controllers/utilities.controller"
+import {addNewArticle, deleteArticleByid, editArticleById} from "./controllers/admin.controller"
 
 
 
@@ -45,11 +46,11 @@ apiRoutes.use("/agro",agro)
 //Sub router usage
 
 /** Admin Routes **/
-// admin.post("/articles/category", addNewArticle)
-//
-// admin.delete("/articles/id", deleteArticleByid)
-//
-// admin.put("/articles/id", editArticleById)
+admin.post("/articles/category", addNewArticle)
+
+admin.delete("/articles/id", deleteArticleByid)
+
+admin.put("/articles/id", editArticleById)
 
 
 

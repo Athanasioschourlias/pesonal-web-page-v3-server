@@ -33,15 +33,15 @@ const articleTypes = [
 ]
 export async function fetchArticlesByCategory(req: Request, res: Response): Promise<void> {
 
-	if(!req.params.category)
+	if(!req.query.category)
 		res.status(500).send("Missing category value")
 
-	if(!articleTypes.includes(String(req.params.category)))
+	if(!articleTypes.includes(String(req.query.category)))
 		res.status(500).send("this is not a valid category")
 
 	const [err, result] = await
 	wrapPromise(
-		getArticlesByCategory(req.params.category as ArticleType)
+		getArticlesByCategory(req.query.category as ArticleType)
 	)
 
 	if(err || !result) {
