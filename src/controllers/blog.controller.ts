@@ -16,8 +16,10 @@ export async function fetchAllArticles(_req: Request, res: Response): Promise<vo
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.statusCode = 200
-	res.send(result)
+	res.send({
+		statusCode: 200,
+		data: result
+	})
 
 
 }
@@ -31,23 +33,25 @@ const articleTypes = [
 ]
 export async function fetchArticlesByCategory(req: Request, res: Response): Promise<void> {
 
-	if(!req.query.category)
+	if(!req.params.category)
 		res.status(500).send("Missing category value")
 
-	if(!articleTypes.includes(String(req.query.category)))
+	if(!articleTypes.includes(String(req.params.category)))
 		res.status(500).send("this is not a valid category")
 
-	const [err, result] = await 
+	const [err, result] = await
 	wrapPromise(
-		getArticlesByCategory(req.query.category as ArticleType)
+		getArticlesByCategory(req.params.category as ArticleType)
 	)
 
 	if(err || !result) {
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.statusCode = 200
-	res.send(result)
+	res.send({
+		statusCode: 200,
+		data: result
+	})
 
 }
 
@@ -60,12 +64,14 @@ export async function fetchAllAnailableCategories(_req: Request, res: Response):
 	// 	return handleServerError(res, 500, String(err))
 	// }
 
-	res.statusCode = 200
 	res.send({
-		"Software": "software_article",
-		"3D Printing": "printing_article",
-		"Robotics": "robotics_article",
-		"Computer Hardware": "computer_hardware_article"
+		statusCode: 200,
+		data: {
+			"Software": "software_article",
+			"3D Printing": "printing_article",
+			"Robotics": "robotics_article",
+			"Computer Hardware": "computer_hardware_article"
+		}
 	})
 
 

@@ -6,13 +6,26 @@ import config from "./config/config"
 import {existsSync} from "fs"
 import path from "path"
 import {connectToDatabase} from "./service/database.service"
+import cors from "cors"
 
 const environment = config.NODE_ENV || "development"
 logger.info(`Initializing thanos webpage Server version: ${packageJson.version}. Enviroment: ${environment}`)
 
 
 const app: express.Application = express()
+
+// Add a list of allowed origins.
+// If you have more origins you would like to add, you can add them to the array below.
+
+const options: cors.CorsOptions = {
+	origin: "*",
+	maxAge: 84600
+}
+
 app.use(express.json())
+	.use((_req, _res, next) => { next() }, cors(options))
+
+
 
 //Error Handler
 //TODO-implement an error handler
