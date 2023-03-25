@@ -29,7 +29,8 @@ const articleTypes = [
 	"software_article",
 	"printing_article",
 	"robotics_article",
-	"computer_hardware_article"
+	"computer_hardware_article",
+	"all"
 ]
 export async function fetchArticlesByCategory(req: Request, res: Response): Promise<void> {
 
@@ -39,10 +40,23 @@ export async function fetchArticlesByCategory(req: Request, res: Response): Prom
 	if(!articleTypes.includes(String(req.query.category)))
 		res.status(500).send("this is not a valid category")
 
-	const [err, result] = await
-	wrapPromise(
-		getArticlesByCategory(req.query.category as ArticleType)
-	)
+	//TODO - Refactor, there is a better way
+	if( req.query.category === "all" ) {
+		const [err, result] = await wrapPromise(fetchArticles())
+
+		if(err || !result) {
+			return handleServerError(res, 500, String(err))
+		}
+
+		res.send({
+			statusCode: 200,
+			data: result
+		})
+	}
+
+	const [err, result] = await wrapPromise(
+		getArticlesByCategory(req.query.category as ArticleType))
+
 
 	if(err || !result) {
 		return handleServerError(res, 500, String(err))
@@ -70,7 +84,8 @@ export async function fetchAllAnailableCategories(_req: Request, res: Response):
 			"Software": "software_article",
 			"3D Printing": "printing_article",
 			"Robotics": "robotics_article",
-			"Computer Hardware": "computer_hardware_article"
+			"Computer Hardware": "computer_hardware_article",
+			"All": "all"
 		}
 	})
 

@@ -4,7 +4,8 @@ type ArticleType =
 	"software_article" |
 	"printing_article" |
 	"robotics_article" |
-	"computer_hardware_article"
+	"computer_hardware_article" |
+	"all"
 
 type article = {
 	article: articles | articles[],
