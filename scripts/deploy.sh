@@ -34,8 +34,8 @@ npm ci
 npm run build
 
 cd "$SCRIPT_DIR"
-rm -rf ../client
-cp -r "$SCRIPT_DIR/../../$CLIENTFILENAME/dist" "../client"
+rm -rf ../public
+cp -r "$SCRIPT_DIR/../../$CLIENTFILENAME/dist" "../public"
 echo "Done building client!!!"
 
 

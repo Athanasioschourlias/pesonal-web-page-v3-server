@@ -5,6 +5,15 @@ import {handleServerError} from "../common/responseHelper"
 import {fetchForms, storFormToDb} from "../service/utillities.service"
 import {form} from "../types/serviceGenericTypes"
 
+export async function health(_req: Request, res: Response): Promise<void> {
+
+	res.send({
+		satusCode: 200,
+		health: "Up and running",
+		route: "Responding a GET call in the route of api/v1/health_check/"
+	})
+
+}
 
 export async function getCv(_req: Request, res: Response): Promise<void> {
 

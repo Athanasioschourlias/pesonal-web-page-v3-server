@@ -13,7 +13,7 @@ COPY . .
 RUN [ "npm", "run", "build" ]
 
 FROM node:${version}
-# This can be overwriten from inside the dockerfile
+# This can be overwritten from inside the dockerfile
 ENV NODE_ENV $NODE_ENV
 
 # Copy files as a non-root user. The `node` user is built in the Node image.
@@ -30,7 +30,7 @@ COPY --chown=node:node --from=builder /usr/src/app/build ./build
 #Downloadable Content
 COPY --chown=node:node ./assets ./build/assets
 # Client
-COPY --chown=node:node ./client ./build/client
+COPY --chown=node:node ./public ./build/public
 EXPOSE 80
 
 # Is a good practice to avoid using the npm command as command to start our app in dockerfiles

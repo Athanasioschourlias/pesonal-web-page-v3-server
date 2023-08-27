@@ -5,7 +5,7 @@ import {
 	fetchArticlesByCategory
 
 } from "./controllers/blog.controller"
-import {getAllForms, getCv, storeFormResults} from "./controllers/utilities.controller"
+import {getAllForms, getCv, storeFormResults, health} from "./controllers/utilities.controller"
 import {addNewArticle, deleteArticleByid, editArticleById} from "./controllers/admin.controller"
 
 
@@ -22,6 +22,7 @@ const apiRoutes = express.Router()
 /**
  * API V1
  */
+const health_check = express.Router() //For a quick and dirty way to check if the api is alive and on what state is at.
 const admin = express.Router() //Admin stuff
 const utilities = express.Router() //For submitting a form or geting CV in a pdf format.
 const blog = express.Router() //For managing all the blog articles, in the blog page and/or the dev page
@@ -34,10 +35,14 @@ routes.use("/api/v1", apiRoutes, express.json())
 //TODO - Implement a token secret logic so not everyone can hit our endpoint if he finds them
 
 // API router usage
+apiRoutes.use("/health_check",health_check)
 apiRoutes.use("/admin",admin)
 apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/blog",blog)
 apiRoutes.use("/agro",agro)
+
+//Health check
+health_check.get("/", health)
 
 //validation
 //TODO - implement a login solution with JWT for admins only for start.
