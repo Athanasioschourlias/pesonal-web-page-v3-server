@@ -1,8 +1,8 @@
-# pesonal-web-page-v3-server
+# Awesome Personal Web Page
 
 ## Table of Contents
 
-- [pesonal-web-page-v3-server](#pesonal-web-page-v3-server)
+- [Awesome Personal Web Page](#awesome-personal-web-page)
   - [Table of Contents](#table-of-contents)
   - [Docker](#docker)
     - [Handling images](#handling-images)
@@ -27,19 +27,19 @@
   - When Building an image
 
   ```bash
-  docker build -t <user>/<image>:<tag>
+  docker build -t user/image:tag
   ```
 
   - Re-taging a local image
   
   ```bash
-  docker tag <local-image> <user>/<image>:<tag>
+  docker tag local-image user/image:tag
   ```
 
   - By committing changes
   
   ```bash
-  docker tag <existing-container> <user>/<image>:<tag>
+  docker tag existing-container user/image:tag
   ```
 
 - To build an image from the server
@@ -51,7 +51,7 @@
   and run
 
   ```bash
-  docker build -f ./<dockerfile-name> -t <hub-user>/<image-name>:<tag> ../../
+  docker build -f ./dockerfile-name -t hub-user/image-name:tag ../../
   ```
 
   _(The "../../", is setting the docker context for the build.)_
@@ -59,7 +59,7 @@
 - Pushing an image to the registry
 
   ```sh
-  docker push <user>/<image>:<tag>
+  docker push user/image:tag
   ```
 
 ### Development enviroment
@@ -67,13 +67,13 @@
 - To start the server in a development enviroment
 
   ```bash
-  docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d
+  docker-compose -p servername --env-file ../src/.env -f docker-compose.yml up --build -d
   ```
 
 - To Stop and remove the containers
 
   ```bash
-  docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d
+  docker-compose -p servername --env-file ../src/.env -f docker-compose.yml up --build -d
   ```
 
 ### Testing Production
@@ -91,13 +91,13 @@
 
   ```sh
   cd ../docker
-  docker-compose -p <project name> --env-file ../src/.env -f docker-compose.prod.yml up --build -d
+  docker-compose -p project name --env-file ../src/.env -f docker-compose.prod.yml up --build -d
   ```
 
 - #### Stoping the page
 
    ```bash
-   docker compose -p <project name> down
+   docker compose -p project name down
    ```
 
 ## Migrations
@@ -125,7 +125,7 @@
 - To create a new migration script is necessary(in our project) to define the location of the config file and the environment variables(connection) on which this migration we would like it to run
 
   ```bash
-  db-migrate create <current date like 240922>-name-of-migrations --config './src/config/database.json' -e '<env>'
+  db-migrate create 'current date like 240922-name-of-migrations' --config './src/config/database.json' -e 'env'
   ```
 
 ### Migrate up
@@ -141,13 +141,13 @@
 - Now to run all the available migrations specified by the env we choose we can run
 
   ```bash
-  db-migrate up --config './src/config/database.json' -e '<env>'
+  db-migrate up --config './src/config/database.json' -e 'env'
   ```
 
 - We can also run a specific number of migration scripts by writing
 
   ```bash
-  db-migrate up -c <number> --config './src/config/database.json' -e '<env>'
+  db-migrate up -c 'number' --config './src/config/database.json' -e 'env'
   ```
 
 ### Migrate down
@@ -155,25 +155,25 @@
 - If we would like to go back one migration script, but again in specific env we can write
 
   ```bash
-  db-migrate down:test --config './src/config/database.json' -e '<env>'
+  db-migrate down:test --config './src/config/database.json' -e 'env'
   ```
 
 - Now to go back one migration we run
   
   ```bash
-  db-migrate down --config './src/config/database.json' -e '<env>'
+  db-migrate down --config './src/config/database.json' -e 'env'
   ```
 
 - We can also run a specific number of migration scripts by writing
 
   ```bash
-  db-migrate down -c <number> --config './src/config/database.json' -e '<env>'
+  db-migrate down -c <number> --config './src/config/database.json' -e 'env'
   ```
   
 - If we want now to execute all the down migrations at once we can run
 
   ```bash
-  db-migrate reset --config './src/config/database.json' -e '<env>'
+  db-migrate reset --config './src/config/database.json' -e 'env'
   ```
 
 ## Jenkins
