@@ -36,7 +36,6 @@ export async function storeFormResults(req: Request, res: Response): Promise<voi
 	res.statusCode = 200
 	res.send(result)
 	res.statusCode = 200
-	res.download(path.join(__dirname,"../.." ,"assets/pdf/23-10-22_google_inter_application.pdf"))
 }
 
 export async function getAllForms(req: Request, res: Response): Promise<void> {

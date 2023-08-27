@@ -7,7 +7,7 @@ import {existsSync} from "fs"
 import path from "path"
 import {connectToDatabase} from "./service/database.service"
 import cors from "cors"
-import historyApiFallback from "connect-history-api-fallback"
+// import historyApiFallback from "connect-history-api-fallback"
 
 
 const environment = config.NODE_ENV || "development"
@@ -26,7 +26,7 @@ const options: cors.CorsOptions = {
 
 app.use(express.json())
 	.use((_req, _res, next) => { next() }, cors(options))
-	.use(historyApiFallback())// Middleware in order to fix the issue when a user refreshes the page and is not in the landing page
+	// .use(historyApiFallback())// Middleware in order to fix the issue when a user refreshes the page and is not in the landing page
 
 
 connectToDatabase()
