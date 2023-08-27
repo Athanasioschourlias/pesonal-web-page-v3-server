@@ -1,97 +1,208 @@
 # pesonal-web-page-v3-server
 
+## Table of Contents
+
+- [pesonal-web-page-v3-server](#pesonal-web-page-v3-server)
+  - [Table of Contents](#table-of-contents)
+  - [Docker](#docker)
+    - [Handling images](#handling-images)
+    - [Development enviroment](#development-enviroment)
+    - [Testing Production](#testing-production)
+  - [Migrations](#migrations)
+    - [db-migrate option](#db-migrate-option)
+    - [Creation of a migration script](#creation-of-a-migration-script)
+    - [Migrate up](#migrate-up)
+    - [Migrate down](#migrate-down)
+  - [Jenkins](#jenkins)
+  - [Kubernetes](#kubernetes)
+  - [Production deployment](#production-deployment)
+
 ## Docker
 
 ---
 
-- ###Handling images
-  - There are three different ways to name/tag local images, and build them
-  
-    - When Building an image -> ```docker build -t <hub-user>/<already-created-repo-name>[:<tag>]```
-    - Re-taging a local image -> ```docker tag <existing-image> <hub-user>/<already-created-repo-name>[:<tag>]```
-    - By committing changes -> ```docker tag <existing-container> <hub-user>/<already-created-repo-name>[:<tag>]```
+### Handling images
 
-  - To build an image from the server
-    
-    1. cd to the dockerfiles
-    2. run -> `docker build -f ./<dockerfile-name> -t athanasioschourlias/webpage-server:[tag] ../../` (The "../../", is setting the docker context for the build.)
-  
-  - Pushing an image to the registry
-    
-    1. RUN -> `docker push athanasioschourlias/webpage-server:[tagname]`
+- There are three different ways to name/tag local images, and build them
+  - When Building an image
 
-- ###Development enviroment
-
-  - To start the server in a development enviroment  
+  ```bash
+  docker build -t <user>/<image>:<tag>
   ```
+
+  - Re-taging a local image
+  
+  ```bash
+  docker tag <local-image> <user>/<image>:<tag>
+  ```
+
+  - By committing changes
+  
+  ```bash
+  docker tag <existing-container> <user>/<image>:<tag>
+  ```
+
+- To build an image from the server
+  
+  ```bash
+  cd docker
+  ```
+
+  and run
+
+  ```bash
+  docker build -f ./<dockerfile-name> -t <hub-user>/<image-name>:<tag> ../../
+  ```
+
+  _(The "../../", is setting the docker context for the build.)_
+
+- Pushing an image to the registry
+
+  ```sh
+  docker push <user>/<image>:<tag>
+  ```
+
+### Development enviroment
+
+- To start the server in a development enviroment
+
+  ```bash
   docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d
   ```
-  - To Stop and remove the containers 
-  ```
+
+- To Stop and remove the containers
+
+  ```bash
   docker-compose -p <servername> --env-file ../src/.env -f docker-compose.yml up --build -d
   ```
 
-- ###Testing Production
+### Testing Production
 
-  - ###Starting the Page
-  1. Go into the scripts folder(important for context) and run the deployment script `./deploy.sh`
-  2. Uncomment the last line of the script or run manually the docker compose command
+- #### Starting the Page
+
+  CD to the scripts folder and run the deployment script to generate the build (JS) files
+
+  ```bash
+  cd scripts
+  ./deploy.sh
   ```
+
+  _The deploy script has the docker compose command included in the end but it is commeted out. You can uncomment it to run the deploy and docker compose command at the same time._
+
+  ```sh
+  cd ../docker
   docker-compose -p <project name> --env-file ../src/.env -f docker-compose.prod.yml up --build -d
   ```
-  - ###Stoping the page
-  1. Run
-  ```
-  docker compose -p thanos-page down
-  ```
+
+- #### Stoping the page
+
+   ```bash
+   docker compose -p <project name> down
+   ```
 
 ## Migrations
 
 ---
 
-- ## db migrate option
+### db-migrate option
+
+```bash
+--env, -e                   The environment to run the migrations under.    [default: "dev"]
+--migrations-dir, -m        The directory containing your migration files.  [default: "./migrations"]
+--count, -c                 Max number of migrations to run.
+--dry-run                   Prints the SQL but doesn't run it.              [boolean]
+--verbose, -v               Verbose mode.                                   [default: false]
+--config                    Location of the database.json file.             [default: "./database.json"]
+--force-exit                Call system.exit() after migration run          [default: false]
+--sql-file                  Create sql files for up and down.               [default: false]
+--coffee-file               Create a coffeescript migration file            [default: false]
+--migration-table           Set the name of the migration table.
+--table, --migration-table                                                  [default: "migrations"]
 ```
---env, -e                   The environment to run the migrations under.    [default: "dev"]```
---migrations-dir, -m        The directory containing your migration files.  [default: "./migrations"]```
---count, -c                 Max number of migrations to run.```
---dry-run                   Prints the SQL but doesn't run it.              [boolean]```
---verbose, -v               Verbose mode.                                   [default: false]```
---config                    Location of the database.json file.             [default: "./database.json"]```
---force-exit                Call system.exit() after migration run          [default: false]```
---sql-file                  Create sql files for up and down.               [default: false]```
---coffee-file               Create a coffeescript migration file            [default: false]```
---migration-table           Set the name of the migration table.```
---table, --migration-table                                                  [default: "migrations"]```
-```
-- ###Creation of a migration script
 
-  - To create a new migration script is necessary(in our project) to define the location of the config file and the environment variables(connection) 
-  on which this migration we would like it to run```db-migrate create <current date like 240922>-name-of-migrations --config './src/config/database.json' -e '<env>'```
+### Creation of a migration script
 
-- ###Migrate up
+- To create a new migration script is necessary(in our project) to define the location of the config file and the environment variables(connection) on which this migration we would like it to run
 
-  1. if we would like for the migration to run only in one of our env's we can run. This scope logic(:<env>) applies to all the migration commands -> ```db-migrate up:test```
+  ```bash
+  db-migrate create <current date like 240922>-name-of-migrations --config './src/config/database.json' -e '<env>'
+  ```
 
-  2. Now to run all the available migrations specified by the env we choose we can run -> ```db-migrate up --config './src/config/database.json' -e '<env>'```
-     1. We can also run a specific number of migration scripts by writing -> ```db-migrate up -c <number> --config './src/config/database.json' -e '<env>'```
-     
-- ###Migrate down
+### Migrate up
 
-  1. If we would like to go back one migration script, but again in specific env we can write -> ```db-migrate down:test --config './src/config/database.json' -e '<env>'```
+- If we would like for the migration to run only in one of our env's we can run
 
-  2. Now to go back one migration we run -> ```db-migrate down --config './src/config/database.json' -e '<env>'```
-     1. We can also run a specific number of migration scripts by writing -> ```db-migrate down -c <number> --config './src/config/database.json' -e '<env>'```
+  ```bash
+  db-migrate up:test
+  ```
+
+  *_This scope logic (:env) applies to all the migration commands_*
+
+- Now to run all the available migrations specified by the env we choose we can run
+
+  ```bash
+  db-migrate up --config './src/config/database.json' -e '<env>'
+  ```
+
+- We can also run a specific number of migration scripts by writing
+
+  ```bash
+  db-migrate up -c <number> --config './src/config/database.json' -e '<env>'
+  ```
+
+### Migrate down
+
+- If we would like to go back one migration script, but again in specific env we can write
+
+  ```bash
+  db-migrate down:test --config './src/config/database.json' -e '<env>'
+  ```
+
+- Now to go back one migration we run
   
-  3. If we want now to execute all the down migrations at once we can run -> ```db-migrate reset --config './src/config/database.json' -e '<env>'``` 
+  ```bash
+  db-migrate down --config './src/config/database.json' -e '<env>'
+  ```
+
+- We can also run a specific number of migration scripts by writing
+
+  ```bash
+  db-migrate down -c <number> --config './src/config/database.json' -e '<env>'
+  ```
+  
+- If we want now to execute all the down migrations at once we can run
+
+  ```bash
+  db-migrate reset --config './src/config/database.json' -e '<env>'
+  ```
 
 ## Jenkins
 
 ---
 
-- To know the status of jenkins:<br />`sudo service jenkins status`
-- To start the jenkins: <br /> `sudo service jenkins start`
-- To stop jenkins:<br /> `sudo service jenkins stop`
-- To restart jenkins<br />`sudo service jenkins restart`
+- To know the status of jenkins:
+
+```bash
+sudo service jenkins status
+```
+
+- To start the jenkins:
+
+```bash
+sudo service jenkins start
+```
+
+- To stop jenkins:
+
+```bash
+sudo service jenkins stop
+```
+
+- To restart jenkins:
+
+```bash
+sudo service jenkins restart
+```
 
 ## Kubernetes
 
@@ -103,4 +214,4 @@
 
 In order to deploy our system in a production like environment we need to refer to the following repository
 
-> https://github.com/Athanasioschourlias/personal-web-page-config
+ > [Web Page Config](https://github.com/Athanasioschourlias/personal-web-page-config)
