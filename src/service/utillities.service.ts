@@ -32,6 +32,7 @@ export async function storFormToDb(user_form: form): Promise<string | null> {
 	})
 
 }
+
 export async function fetchForms(): Promise<form[] | null> {
 
 	return new Promise((resolve, reject) => {
