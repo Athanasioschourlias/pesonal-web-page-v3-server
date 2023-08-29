@@ -61,6 +61,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Kill Application') {
+            steps {
+                    sh '''
+                        kill $APP_PID
+                    '''
+            }
     }
 
     post {
