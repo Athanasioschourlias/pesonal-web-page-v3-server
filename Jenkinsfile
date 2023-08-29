@@ -2,19 +2,15 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = 'development'
-        PORT = '3000'
-        EXPOSED_PORT = '3000'
-        TOKEN_SECRET = '1234'
-        MONGO_URI = 'mongodb://localhost:27017/'
+        NODE_ENV=development
+        PORT=3000
+        EXPOSED_PORT=3000
+        TOKEN_SECRET="2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&"
+        DB_CONN_STRING="mongodb://localhost:27017"
+        DB_NAME="articlesDB"
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
 
         stage('Start MongoDB') {
             steps {
