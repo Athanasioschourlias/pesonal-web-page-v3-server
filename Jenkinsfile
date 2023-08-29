@@ -63,6 +63,25 @@ pipeline {
             }
         }
 
+
+        // E2E Test step should be run before doing anything with image pushing
+
+        stage('Prepare .env') {
+            steps {
+                script {
+                    // Write to the .env file in /src directory
+                    writeFile file: 'src/.env', text: """\
+                        DB_CONN_STRING=${DB_CONN_STRING}
+                        DB_NAME=${DB_NAME}
+                        NODE_ENV=${NODE_ENV}
+                        PORT=${PORT}
+                        EXPOSED_PORT=${EXPOSED_PORT}
+                        TOKEN_SECRET=${TOKEN_SECRET}
+                    """
+                }
+            }
+        }
+
         stage('Docker Build and Push') {
             steps {
                 script {
