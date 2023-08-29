@@ -8,6 +8,8 @@ pipeline {
         TOKEN_SECRET="2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&"
         DB_CONN_STRING="mongodb://localhost:27017"
         DB_NAME="articlesDB"
+        DOCKER_IMAGE = 'chmaikos/devops_hua'
+        DOCKER_TAG = "latest"
     }
 
     stages {
@@ -57,6 +59,24 @@ pipeline {
                     sh '''
                         npm start &
                     '''
+                }
+            }
+        }
+
+        stage('Docker Build and Push') {
+            steps {
+                script {
+                    // Retrieve credentials from Jenkins credentials manager
+                    withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        // Login to DockerHub
+                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+
+                        // Build Docker image
+                        sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f ./docker/dockerfiles/Dockerfile.prod ."
+
+                        // Push to DockerHub
+                        sh "docker push $DOCKER_IMAGE:$DOCKER_TAG"
+                    }
                 }
             }
         }
