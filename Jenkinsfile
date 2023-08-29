@@ -76,7 +76,6 @@ pipeline {
             sh '''
                 docker stop mongodb-test || true
                 docker rm mongodb-test || true
-                kill $APP_PID
             '''
         }
     }
