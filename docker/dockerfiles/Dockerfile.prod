@@ -37,9 +37,5 @@ EXPOSE 80
 # and that is because npm does NOT pass SIGTERM OS signal to Node process and bc of that node is NOT
 # able to do a proper clean up before exit, docker and k8's send SIGTERM to container process when they want to stop it.
 # Many things like database connections and libraries may depent on SIGTERM and this can lead to many issues.
-# CMD [ "node", "./build/src/server.js" ]
-CMD [ "npm", "run", "prod" ]
-
-
-
-
+CMD [ "node", "./build/src/server.js" ]
+#CMD [ "npm", "run", "prod" ]

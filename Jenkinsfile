@@ -56,17 +56,8 @@ pipeline {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
                         npm start &
-                        APP_PID=$!
                     '''
                 }
-            }
-        }
-
-        stage('Kill Application') {
-            steps {
-                    sh '''
-                        kill $APP_PID
-                    '''
             }
         }
     }
