@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV=development
+        NODE_ENV="development"
         PORT=3000
         EXPOSED_PORT=3000
         TOKEN_SECRET="2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&"
