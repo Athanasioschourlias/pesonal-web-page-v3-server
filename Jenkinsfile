@@ -6,7 +6,7 @@ pipeline {
         PORT=3000
         EXPOSED_PORT=3000
         TOKEN_SECRET="2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&"
-        DB_CONN_STRING="mongodb://localhost:27017"
+        DB_CONN_STRING="mongodb://page-db:27017"
         DB_NAME="articlesDB"
         DOCKER_IMAGE = 'chmaikos/devops_hua'
         DOCKER_TAG = "latest"
@@ -17,7 +17,7 @@ pipeline {
         stage('Start MongoDB') {
             steps {
                 sh '''
-                    docker run --name mongodb-test -d -p 27017:27017 mongo:latest
+                    docker run --name page-db -d -p 27017:27017 mongo:latest
                 '''
             }
         }
@@ -105,8 +105,8 @@ pipeline {
         always {
             // Actions that should be taken regardless of the build status
             sh '''
-                docker stop mongodb-test || true
-                docker rm mongodb-test || true
+                docker stop page-db || true
+                docker rm page-db || true
             '''
         }
     }
