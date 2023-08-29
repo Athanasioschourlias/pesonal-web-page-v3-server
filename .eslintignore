@@ -1,4 +1,5 @@
 node_modules
 build
 jest.config.js
+client/
 ./assests/db/*
