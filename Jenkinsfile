@@ -68,7 +68,7 @@ pipeline {
                         kill $APP_PID
                     '''
             }
-    }
+        }
 
     post {
         always {
