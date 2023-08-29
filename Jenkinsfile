@@ -1,25 +1,78 @@
 pipeline {
-   agent any
+    agent any
 
-   stages {
-        stage('Test') {
-                   steps {
-                       nodejs(nodeJSInstallationName: '17.0.0') {
-                                           sh '''npm --version
-                                                npm ci'''
-                       }
-                   }
+    environment {
+        NODE_ENV = 'development'
+        PORT = '3000'
+        EXPOSED_PORT = '3000'
+        TOKEN_SECRET = '1234'
+        MONGO_URI = 'mongodb://localhost:27017/'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
         }
+
+        stage('Start MongoDB') {
+            steps {
+                sh '''
+                    docker run --name mongodb-test -d -p 27017:27017 mongo:latest
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                nodejs(nodeJSInstallationName: '17.0.0') {
+                    sh '''
+                        npm --version
+                        npm ci
+                    '''
+                }
+            }
+        }
+
+        stage('Run Lint') {
+            steps {
+                nodejs(nodeJSInstallationName: '17.0.0') {
+                    sh '''
+                        npm run lint
+                    '''
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
-                        echo "NODE_ENV=development\nPORT=3000\nEXPOSED_PORT=3000\nTOKEN_SECRET=1234\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=securepwd" >> src/.env
                         npm run build
-
-                       '''
+                    '''
                 }
             }
         }
-   }
+
+        stage('Run Application') {
+            steps {
+                nodejs(nodeJSInstallationName: '17.0.0') {
+                    sh '''
+                        npm start
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Actions that should be taken regardless of the build status
+            sh '''
+                docker stop mongodb-test || true
+                docker rm mongodb-test || true
+            '''
+        }
+    }
 }
