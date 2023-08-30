@@ -23,16 +23,12 @@ spec:
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
-        io.kompose.network/docker-default: "true"
+        io.kompose.network/docker-backend-network: "true"
         io.kompose.service: page-db
     spec:
       containers:
         - image: mongo:latest
           name: personal-web-page-dev-db
-          ports:
-            - containerPort: 27017
-              hostPort: 27017
-              protocol: TCP
           resources: {}
           volumeMounts:
             - mountPath: /data/db

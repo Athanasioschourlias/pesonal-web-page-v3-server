@@ -23,15 +23,15 @@ spec:
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
-        io.kompose.network/docker-default: "true"
+        io.kompose.network/docker-backend-network: "true"
         io.kompose.service: page-server
     spec:
       containers:
         - env:
             - name: NODE_ENV
-              value: '"production"'
+              value: production
             - name: TOKEN_SECRET
-              value: '"123"'
+              value: "123"
           image: chmaikos/devops_hua:latest
           name: personal-webpage-dev-server
           ports:

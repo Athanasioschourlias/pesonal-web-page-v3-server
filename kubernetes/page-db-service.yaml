@@ -10,11 +10,10 @@ metadata:
   name: page-db
   namespace: default
 spec:
-  ports:
-    - name: "27017"
-      port: 27017
-      targetPort: 27017
   selector:
     io.kompose.service: page-db
-status:
-  loadBalancer: {}
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP
