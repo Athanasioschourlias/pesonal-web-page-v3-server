@@ -29,9 +29,9 @@ spec:
       containers:
         - env:
             - name: NODE_ENV
-              value: production
+              value: '"production"'
             - name: TOKEN_SECRET
-              value: "123"
+              value: '"123"'
           image: chmaikos/devops_hua:latest
           name: personal-webpage-dev-server
           ports:
