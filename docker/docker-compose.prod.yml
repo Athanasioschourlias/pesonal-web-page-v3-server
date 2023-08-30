@@ -4,27 +4,31 @@ volumes:
   webpage-db-data:
   client-images:
 
+networks:
+  backend-network:
+    driver: bridge
+
 services:
   page-db:
     container_name: personal_web_page_dev_db
     image: mongo:latest
     restart: always
-    ports:
-      - "27017:27017"
     volumes:
       - webpage-db-data:/data/db
+    networks:
+      - backend-network
 
   page-server:
     container_name: personal_webpage_dev_server
     environment:
-      - TOKEN_SECRET="${TOKEN_SECRET:-123}" #Default is 123
-      - NODE_ENV="${NODE_ENV:-production}"
-    image: chmaikos/devops_hua:latest #We are taking the images from the registry based on tags for the versioning
+      - TOKEN_SECRET=${TOKEN_SECRET:-123}
+      - NODE_ENV=${NODE_ENV:-production}
+    image: chmaikos/devops_hua:latest 
     ports:
-      - "${EXPOSED_PORT:-80}:${PORT:-80}" #container port (PORT, from .env), assigned to given host port, the exposed from the dockerfile (EXPOSED_PORT)
+      - "${EXPOSED_PORT:-80}:${PORT:-80}"
     volumes:
       - client-images:/usr/src/app/build/client/images
     depends_on:
       - page-db
-    links:
-      - page-db
+    networks:
+      - backend-network
