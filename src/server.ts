@@ -3,11 +3,8 @@ import routes from "./routes"
 import logger from "./common/logger"
 import packageJson from "../package.json"
 import config from "./config/config"
-import {existsSync} from "fs"
-import path from "path"
 import {connectToDatabase} from "./service/database.service"
 import cors from "cors"
-// import historyApiFallback from "connect-history-api-fallback"
 
 
 const environment = config.NODE_ENV || "development"
@@ -40,6 +37,3 @@ connectToDatabase()
 	.catch((error: Error) => {
 		logger.error(`Databae connection failed -> ${error}`)
 	})
-
-//Error Handler
-//TODO-implement an error handler
