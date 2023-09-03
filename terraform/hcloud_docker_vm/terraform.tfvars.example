@@ -1,0 +1,5 @@
+hcloud_token  = "YOUR_HETZNER_CLOUD_API_TOKEN"
+ssh_key_path  = "~/.ssh/id_rsa.pub"
+domain_name   = "YOUR_DOMAIN_NAME"
+cloudflare_api_token = "YOUR_CLOUDFLARE_API_TOKEN"
+cloudflare_zone_id   = "YOUR_CLOUDFLARE_ZONE_ID"

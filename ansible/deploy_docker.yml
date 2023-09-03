@@ -1,0 +1,24 @@
+---
+- name: Deploy Docker Compose Stack from GitHub Raw URL to VM
+  hosts: docker
+  become: yes
+  vars:
+    ansible_ssh_user: root
+    compose_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/docker/docker-compose.prod.yml"
+    dest_folder: "/opt/docker-compose"
+    compose_file: "docker-compose.prod.yml"
+
+  tasks:
+    - name: Fetch Docker Compose file from GitHub
+      get_url:
+        url: "{{ compose_url }}"
+        dest: "{{ dest_folder }}/{{ compose_file }}"
+        
+    - name: Remove any existing Docker Compose stack with the same name
+      shell:
+        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} down -v || true"
+      ignore_errors: yes  # Ignore errors if the stack is not currently running
+
+    - name: Pull and run the Docker Compose stack
+      shell:
+        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} pull && docker compose -f {{ dest_folder }}/{{ compose_file }} up -d"
