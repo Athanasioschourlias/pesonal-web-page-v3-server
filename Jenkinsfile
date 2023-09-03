@@ -5,7 +5,7 @@ pipeline {
         NODE_ENV="development"
         PORT=3000
         EXPOSED_PORT=3000
-        TOKEN_SECRET="2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&"
+        TOKEN_SECRET="123"
         DB_CONN_STRING="mongodb://page-db:27017"
         DB_NAME="articlesDB"
         DOCKER_IMAGE = 'chmaikos/devops_hua'
