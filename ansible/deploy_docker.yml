@@ -21,4 +21,4 @@
 
     - name: Pull and run the Docker Compose stack
       shell:
-        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} pull && docker compose -f {{ dest_folder }}/{{ compose_file }} up -d"
+        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} pull && docker compose -f {{ dest_folder }}/{{ compose_file }} up --force-recreate -d"
