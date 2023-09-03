@@ -8,10 +8,6 @@ services:
     container_name: personal_web_page_dev_db
     image: mongo:latest
     restart: always
-    #TODO - How to secure my db
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: mongo
-#      MONGO_INITDB_ROOT_PASSWORD: rootpass
     ports:
       - "27017:27017"
     volumes:
@@ -22,7 +18,7 @@ services:
     #we can use images from the registry but because in the dev enviroment we will make many changes its more usefull to rebuild the image every time
     build:
       context: .. #Very important it refers where the root will be for the build.
-      dockerfile: docker/dockerfiles/Dockerfile.dev
+      dockerfile: docker/dockerfiles/Dockerfile.prod
     #image: athanasioschourlias/webpageserver-dev:alpha-0.0.1 #We are taking the images from the registry based on tags for the versioning
     ports:
       - "${EXPOSED_PORT}:${PORT}" #container port (PORT, from .env), assigned to given host port, the exposed from the dockerfile (EXPOSED_PORT)
