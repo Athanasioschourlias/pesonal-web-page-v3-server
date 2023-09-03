@@ -9,6 +9,7 @@ export const collections: {
 	printing_article?: mongoDB.Collection,
 	robotics_article?: mongoDB.Collection,
 	computer_hardware_article?: mongoDB.Collection,
+	users?: mongoDB.Collection,
 	forms?: mongoDB.Collection
 } = {}
 
@@ -38,11 +39,14 @@ export async function connectToDatabase () {
 	const froms_collection: mongoDB.Collection =
 		db.collection("forms")
 
+	const users: mongoDB.Collection =
+		db.collection("users")
+
 	collections.software_article = software_article_Collection
 	collections.printing_article = printing_article_Collection
 	collections.robotics_article = robotics_article_Collection
 	collections.computer_hardware_article = hardware_article_Collection
-
+	collections.users = users
 	collections.forms = froms_collection
 
 	logger.info(`Successfully connected to database: ${db.databaseName} 

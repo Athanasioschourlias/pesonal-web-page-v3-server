@@ -5,8 +5,15 @@ import {
 	fetchArticlesByCategory
 
 } from "./controllers/blog.controller"
-import {getAllForms, getCv, storeFormResults, health} from "./controllers/utilities.controller"
+import {
+	getAllForms,
+	getCv,
+	health,
+	sendFormResults
+} from "./controllers/utilities.controller"
 import {addNewArticle, deleteArticleByid, editArticleById} from "./controllers/admin.controller"
+import {loginOne, registerOne} from "./controllers/authentication.controler"
+import {authToken} from "./middlewares/authjwt.middleware"
 
 
 
@@ -27,6 +34,7 @@ const admin = express.Router() //Admin stuff
 const utilities = express.Router() //For submitting a form or geting CV in a pdf format.
 const blog = express.Router() //For managing all the blog articles, in the blog page and/or the dev page
 const agro = express.Router() //For the connected apps like weather on fields and other feature apps.
+const auth = express.Router() //Routes related to any authentication needed for the users.
 
 
 // Main router object usage
@@ -40,28 +48,31 @@ apiRoutes.use("/admin",admin)
 apiRoutes.use("/utilities",utilities)
 apiRoutes.use("/blog",blog)
 apiRoutes.use("/agro",agro)
+apiRoutes.use("/auth",auth)
+
 
 //Health check
-health_check.get("/", health)
-
-//validation
-//TODO - implement a login solution with JWT for admins only for start.
-// admin.use()
+health_check.get("/",authToken, health)
 
 //Sub router usage
 
+/** Authentication Routes **/
+auth.post("/login", loginOne)
+auth.post("/register", registerOne)
+
+
 /** Admin Routes **/
-admin.post("/articles/category", addNewArticle)
+admin.post("/articles/category",authToken, addNewArticle)
 
-admin.delete("/articles/id", deleteArticleByid)
+admin.delete("/articles/id",authToken, deleteArticleByid)
 
-admin.put("/articles/id", editArticleById)
+admin.put("/articles/id",authToken, editArticleById)
 
-admin.get("/forms", getAllForms)
+admin.get("/forms",authToken, getAllForms)
 
 /** Utilities **/
 utilities.get("/cv", getCv)
-utilities.post("/form", storeFormResults)//figure out whether the forms will be stored in the db or send by mail or both.
+utilities.post("/form", sendFormResults)//figure out whether the forms will be stored in the db or send by mail or both.
 
 /** Blog **/
 blog.get("/articles/all", fetchAllArticles)

@@ -22,7 +22,7 @@ export async function getCv(_req: Request, res: Response): Promise<void> {
 	res.download(path.join(__dirname,"../.." ,"assets/pdf/23-10-22_google_inter_application.pdf"))
 }
 
-export async function storeFormResults(req: Request, res: Response): Promise<void> {
+export async function sendFormResults(req: Request, res: Response): Promise<void> {
 
 	if(!req.body) {
 		res.status(500).send("No body for the new form provided")
@@ -41,8 +41,6 @@ export async function storeFormResults(req: Request, res: Response): Promise<voi
 	if(err || !result) {
 		return handleServerError(res, 500, String(err))
 	}
-
-
 
 	res.send({
 		satusCode: 200,

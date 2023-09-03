@@ -42,9 +42,7 @@ export async function getArticlesByCategory(category: ArticleType): Promise<arti
 			//TODO- maybe fix this type sometime
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
-			return resolve(collections[category].find().toArray() as articles[]
-
-			)
+			return resolve(collections[category].find().toArray() as articles[])
 		} catch (error) {
 			return reject(`failed to retrieve item from collection -> ${error}`)
 		}
