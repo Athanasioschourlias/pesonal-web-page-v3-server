@@ -13,7 +13,7 @@ RUN chmod +x /usr/src/app/scripts/build.sh
 RUN ["bash", "/usr/src/app/scripts/build.sh"]
 
 FROM node:${version}
-# This can be overwriten from inside the dockerfile
+# This can be overwritten from inside the dockerfile
 ENV NODE_ENV $NODE_ENV
 
 # Copy files as a non-root user. The `node` user is built in the Node image.

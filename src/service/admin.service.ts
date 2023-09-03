@@ -1,5 +1,4 @@
 import {collections} from "./database.service"
-// import {ObjectID} from "mongodb"
 import {articles} from "../models/technical_article"
 import {ObjectID} from "mongodb"
 
