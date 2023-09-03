@@ -5,20 +5,26 @@
   vars:
     ansible_ssh_user: root
     compose_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/docker/docker-compose.prod.yml"
-    dest_folder: "/opt/docker-compose"
-    compose_file: "docker-compose.prod.yml"
+    nginx_conf_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/nginx/nginx_docker.conf"
+    compose_dest: "/opt/docker-compose/docker-compose.prod.yml"
+    nginx_conf_dest: "/opt/nginx/nginx_docker.conf"
 
   tasks:
     - name: Fetch Docker Compose file from GitHub
       get_url:
         url: "{{ compose_url }}"
-        dest: "{{ dest_folder }}/{{ compose_file }}"
-        
+        dest: "{{ compose_dest }}"
+
+    - name: Fetch Nginx Configuration from GitHub
+      get_url:
+        url: "{{ nginx_conf_url }}"
+        dest: "{{ nginx_conf_dest }}"
+
     - name: Remove any existing Docker Compose stack with the same name
       shell:
-        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} down -v || true"
+        cmd: "docker compose -f {{ compose_dest }} down -v || true"
       ignore_errors: yes  # Ignore errors if the stack is not currently running
 
     - name: Pull and run the Docker Compose stack
       shell:
-        cmd: "docker compose -f {{ dest_folder }}/{{ compose_file }} pull && docker compose -f {{ dest_folder }}/{{ compose_file }} up --force-recreate -d"
+        cmd: "docker compose -f {{ compose_dest }} pull && docker compose -f {{ compose_dest }} up --force-recreate -d"
