@@ -31,7 +31,6 @@ COPY --chown=node:node --from=builder /usr/src/app/build ./build
 COPY --chown=node:node ./assets ./build/assets
 # Client
 # COPY --chown=node:node ./client ./build/client not needed anymore, stays for debugging purposes
-EXPOSE 80
 
 # Is a good practice to avoid using the npm command as command to start our app in dockerfiles
 # and that is because npm does NOT pass SIGTERM OS signal to Node process and bc of that node is NOT
