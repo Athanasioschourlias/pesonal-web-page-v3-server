@@ -8,7 +8,13 @@ type verifiedUser = {
 
 }
 
+type login_creds={
+	username: string,
+	password: string
+}
+
 
 export {
-	verifiedUser
+	verifiedUser,
+	login_creds
 }

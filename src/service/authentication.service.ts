@@ -4,7 +4,7 @@ import logger from "../common/logger"
 import bcrypt from "bcrypt"
 import process from "process"
 import jwt from "jsonwebtoken"
-import {verifiedUser} from "../types/authentication types"
+import {login_creds, verifiedUser} from "../types/authentication types"
 
 export async function register(user: User): Promise<string | null> {
 
@@ -45,7 +45,7 @@ export async function register(user: User): Promise<string | null> {
 }
 
 
-export async function login(user: User): Promise<string | null | verifiedUser> {
+export async function login(user: login_creds): Promise<string | null | verifiedUser> {
 
 	//Checking is the user provides a user or not
 	if(!user)

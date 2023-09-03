@@ -7,16 +7,18 @@ import {
 	deleteTechnicalArticle,
 	putTechnicalArticle
 } from "../service/admin.service"
+import logger from "../common/logger"
 
 export async function addNewArticle(req: Request, res: Response): Promise<void> {
 
+	logger.info(req.body)
 
 	if(!req.body) {
 		res.status(500).send("No body for the new article provided")
 	}
 
 	const [err, result] = await wrapPromise(
-		createTechnicalArticle(req.body as articles)
+		createTechnicalArticle(req.body.data as articles)
 	)
 
 	if(err || !result) {
