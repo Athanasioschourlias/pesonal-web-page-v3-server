@@ -17,14 +17,14 @@ fi
 
 
 ###SERVER BUILD###
-npm ci
+npm install
 npm run build || exit 1
 echo "Done Building Server!!"
 
 cd "$SCRIPT_DIR/../client"
 
 ###CLIENT BUILD###
-npm ci
+npm install
 npm run build || exit 1
 cp -r "$SCRIPT_DIR/../client/dist" "$SCRIPT_DIR/../build/client"
 echo "Done building client!!!"

@@ -23,7 +23,7 @@ USER node
 
 COPY --chown=node:node package.json ./
 COPY --chown=node:node package-lock.json ./
-RUN npm ci --production
+RUN npm install --only=production
 
 # App files
 COPY --chown=node:node --from=builder /usr/src/app/build ./build
