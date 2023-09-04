@@ -82,9 +82,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
-                        sh """
+                        sh '''
                             docker run --rm -v $(pwd):/ansible -v $SSH_KEY_PATH:/root/.ssh/id_rsa -w /ansible ansible/ansible-runner ansible-playbook ansible/deploy_docker.yml
-                        """
+                        '''
                     }
                 }
             }
