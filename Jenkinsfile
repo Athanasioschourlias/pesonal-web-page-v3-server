@@ -11,7 +11,7 @@ pipeline {
         SMTP_HOST="smtp.gmail.com"
         SMTP_PORT=587
         SMTP_USERNAME="thanos.chourlias+form@gmail.com"
-        SMTP_PASSWORD=${SMTP_PASSWORD_DEVOPS_HUA}
+        SMTP_PASSWORD="${SMTP_PASSWORD_DEVOPS_HUA}"
         SMTP_SENDER="thanos.chourlias+form@gmail.com"
     }
 
