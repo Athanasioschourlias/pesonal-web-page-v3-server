@@ -33,7 +33,9 @@ services:
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_SENDER: ${SMTP_SENDER}
-    image: chmaikos/devops_hua:latest
+    build:
+      context: .. #Very important it refers where the root will be for the build.
+      dockerfile: docker/dockerfiles/Dockerfile.prod
     volumes:
       - client-images:/usr/src/app/build/client/images
       - static-client:/usr/src/app/build/client  # Map static files to shared volume

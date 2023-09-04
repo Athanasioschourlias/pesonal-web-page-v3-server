@@ -10,7 +10,6 @@
     "prod": "npm run start",
     "prebuild": "rm -rf ./build ./build_client",
     "build": "tsc",
-    "postbuild": "cp -r package.json package-lock.json src/.env src/ build/ && cd build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
     "test:dev": "jest",

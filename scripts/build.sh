@@ -8,12 +8,12 @@ cd "$SCRIPT_DIR/.."
 
 ###PREBUILD STAGE###
 
-#checking if the .env file exists in order for the env variables to be accessible
-if [[ ! -f "src/.env" ]]
-then
-  echo "You have to specify a .env file"
-  exit 1
-fi
+# #checking if the .env file exists in order for the env variables to be accessible
+# if [[ ! -f "src/.env" ]]
+# then
+#   echo "You have to specify a .env file"
+#   exit 1
+# fi
 
 
 ###SERVER BUILD###

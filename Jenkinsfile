@@ -5,11 +5,14 @@ pipeline {
         NODE_ENV="development"
         PORT=3000
         EXPOSED_PORT=3000
-        TOKEN_SECRET="123"
+        TOKEN_SECRET=123
         DB_CONN_STRING="mongodb://page-db:27017"
-        DB_NAME="articlesDB"
-        DOCKER_IMAGE = 'chmaikos/devops_hua'
-        DOCKER_TAG = "latest"
+        DB_NAME="blogDb"
+        SMTP_HOST="smtp.gmail.com"
+        SMTP_PORT=587
+        SMTP_USERNAME="thanos.chourlias+form@gmail.com"
+        SMTP_PASSWORD=env.SMTP_PASSWORD_DEVOPS_HUA
+        SMTP_SENDER="thanos.chourlias+form@gmail.com"
     }
 
     stages {
@@ -63,38 +66,25 @@ pipeline {
             }
         }
 
-
-        // E2E Test step should be run before doing anything with image pushing
-
-        stage('Prepare .env') {
+        stage('Docker Build and Push') {
             steps {
                 script {
-                    // Write to the .env file in /src directory
-                    writeFile file: 'src/.env', text: """\
-                        DB_CONN_STRING=${DB_CONN_STRING}
-                        DB_NAME=${DB_NAME}
-                        NODE_ENV=${NODE_ENV}
-                        PORT=${PORT}
-                        EXPOSED_PORT=${EXPOSED_PORT}
-                        TOKEN_SECRET=${TOKEN_SECRET}
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+                        sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f ./docker/dockerfiles/Dockerfile.prod ."
+                        sh "docker push $DOCKER_IMAGE:$DOCKER_TAG"
+                    }
                 }
             }
         }
 
-        stage('Docker Build and Push') {
+        stage('Run Ansible Playbooks') {
             steps {
                 script {
-                    // Retrieve credentials from Jenkins credentials manager
-                    withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        // Login to DockerHub
-                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
-
-                        // Build Docker image
-                        sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f ./docker/dockerfiles/Dockerfile.prod ."
-
-                        // Push to DockerHub
-                        sh "docker push $DOCKER_IMAGE:$DOCKER_TAG"
+                    withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
+                        sh """
+                            docker run --rm -v $(pwd):/ansible -v $SSH_KEY_PATH:/root/.ssh/id_rsa -w /ansible ansible/ansible-runner ansible-playbook ansible/deploy_docker.yml
+                        """
                     }
                 }
             }

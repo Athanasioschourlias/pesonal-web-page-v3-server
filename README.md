@@ -106,19 +106,19 @@
 
 ### db-migrate option
 
-```bash
---env, -e                   The environment to run the migrations under.    [default: "dev"]
---migrations-dir, -m        The directory containing your migration files.  [default: "./migrations"]
---count, -c                 Max number of migrations to run.
---dry-run                   Prints the SQL but doesn't run it.              [boolean]
---verbose, -v               Verbose mode.                                   [default: false]
---config                    Location of the database.json file.             [default: "./database.json"]
---force-exit                Call system.exit() after migration run          [default: false]
---sql-file                  Create sql files for up and down.               [default: false]
---coffee-file               Create a coffeescript migration file            [default: false]
---migration-table           Set the name of the migration table.
---table, --migration-table                                                  [default: "migrations"]
-```
+| Option                | Description                                     | Default Value   |
+|----------------------|-------------------------------------------------|-----------------|
+| `--env`, `-e`         | The environment to run the migrations under.     | `"dev"`         |
+| `--migrations-dir`, `-m` | The directory containing your migration files. | `"./migrations"`|
+| `--count`, `-c`       | Max number of migrations to run.                 |                 |
+| `--dry-run`           | Prints the SQL but doesn't run it.               | `boolean`       |
+| `--verbose`, `-v`     | Verbose mode.                                    | `false`         |
+| `--config`            | Location of the `database.json` file.            | `"./database.json"`|
+| `--force-exit`        | Call `system.exit()` after migration run         | `false`         |
+| `--sql-file`          | Create sql files for up and down.                | `false`         |
+| `--coffee-file`       | Create a coffeescript migration file             | `false`         |
+| `--migration-table`   | Set the name of the migration table.             | `"migrations"`  |
+| `--table`, `--migration-table` |                                           | `"migrations"`  |
 
 ### Creation of a migration script
 
