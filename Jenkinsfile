@@ -13,6 +13,8 @@ pipeline {
         SMTP_USERNAME="thanos.chourlias+form@gmail.com"
         SMTP_PASSWORD="${SMTP_PASSWORD_DEVOPS_HUA}"
         SMTP_SENDER="thanos.chourlias+form@gmail.com"
+        DOCKER_IMAGE="chmaikos/devops"
+        DOCKER_TAG="latest"
     }
 
     stages {
