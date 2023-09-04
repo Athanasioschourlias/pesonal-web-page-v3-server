@@ -90,7 +90,7 @@ pipeline {
                             docker run --rm \
                             -v $(pwd):/ansible \
                             -v ${SSH_KEY}:/root/.ssh/id_rsa \
-                            -w /ansible willhallonline/ansible:alpine-3.12 \
+                            -w quay.io/ansible/ansible-runner:latest \
                             ansible-playbook ansible/deploy_docker.yml
                         '''
                     }
