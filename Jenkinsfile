@@ -88,10 +88,10 @@ pipeline {
                         // Run Ansible playbook inside Docker container
                         sh '''
                             docker run --rm \
-                            -v $(pwd):/ansible \
+                            -v $(pwd)/ansible:/ansible \
                             -v ${SSH_KEY}:/root/.ssh/id_rsa \
-                            -w /ansible quay.io/ansible/ansible-runner:latest \
-                            ansible-playbook ansible/deploy_docker.yml
+                            -w . quay.io/ansible/ansible-runner:latest \
+                            ansible-playbook deploy_docker.yml
                         '''
                     }
                 }
