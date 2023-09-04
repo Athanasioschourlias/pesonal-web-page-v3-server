@@ -80,12 +80,18 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbooks') {
+        stage('Run Ansible Playbook') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
+                    // Retrieve credentials from Jenkins credentials manager
+                    withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY')]) {
+                        // Run Ansible playbook inside Docker container
                         sh '''
-                            docker run --rm -v $(pwd):/ansible -v $SSH_KEY_PATH:/root/.ssh/id_rsa -w /ansible ansible/ansible-runner ansible-playbook ansible/deploy_docker.yml
+                            docker run --rm \
+                            -v $(pwd):/ansible \
+                            -v ${SSH_KEY}:/root/.ssh/id_rsa \
+                            -w /ansible willhallonline/ansible:alpine-3.12 \
+                            ansible-playbook ansible/deploy_docker.yml
                         '''
                     }
                 }
