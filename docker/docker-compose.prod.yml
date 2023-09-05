@@ -33,6 +33,7 @@ services:
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_SENDER: ${SMTP_SENDER}
+      API_BASE_URL: ${API_BASE_URL}
     image: chmaikos/devops_hua:latest
     volumes:
       - client-images:/usr/src/app/build/client/images
@@ -49,7 +50,7 @@ services:
       - ../nginx/nginx_docker.conf:/etc/nginx/nginx.conf
       - static-client:/etc/html/www/static/client  # Map shared volume to Nginx path
     ports:
-      - "80:80"  # Expose port 80 to the world
+      - "80:80"
     depends_on:
       - page-server
     networks:

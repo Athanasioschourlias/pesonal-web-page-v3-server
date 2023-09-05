@@ -15,6 +15,7 @@ pipeline {
         SMTP_SENDER="thanos.chourlias+form@gmail.com"
         DOCKER_IMAGE="chmaikos/devops_hua"
         DOCKER_TAG="latest"
+        API_BASE_URL="http://devops-docker.red-net.gr/api/v1/"
     }
 
     stages {
