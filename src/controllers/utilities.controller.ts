@@ -9,10 +9,11 @@ import {form} from "../types/serviceGenericTypes"
 export async function health(_req: Request, res: Response): Promise<void> {
 
 	res.send({
-		satusCode: 200,
+		statusCode: 200,
 		health: "Up and running",
 		route: "Responding a GET call in the route of api/v1/health_check/"
-	})
+	});
+	return;
 
 }
 
@@ -43,7 +44,7 @@ export async function sendFormResults(req: Request, res: Response): Promise<void
 	}
 
 	res.send({
-		satusCode: 200,
+		statusCode: 200,
 		data: result
 	})
 }
@@ -61,7 +62,7 @@ export async function getAllForms(req: Request, res: Response): Promise<void> {
 	}
 
 	res.send({
-		satusCode: 200,
+		statusCode: 200,
 		data: result
 	})
 }
