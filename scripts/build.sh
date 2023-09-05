@@ -13,7 +13,7 @@ cd "$SCRIPT_DIR/.."
 # then
 #   echo "You have to specify a .env file"
 #   exit 1
-# fi
+# f
 
 
 ###SERVER BUILD###
