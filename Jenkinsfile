@@ -85,7 +85,7 @@ pipeline {
                             -e "ANSIBLE_VAULT_PASSWORD=${VAULT_PASS}" \
                             --name deployer \
                             -w /ansible quay.io/ansible/ansible-runner:latest \
-                            ansible-playbook --vault-password-file /dev/stdin deploy_docker.yml <<< "${VAULT_PASS}"
+                            bash -c ansible-playbook --vault-password-file /dev/stdin deploy_docker.yml <<< "${VAULT_PASS}"
                         '''
                     }
                 }
