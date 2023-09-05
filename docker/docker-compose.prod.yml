@@ -49,9 +49,23 @@ services:
     volumes:
       - ../nginx/nginx_docker.conf:/etc/nginx/nginx.conf
       - static-client:/etc/html/www/static/client  # Map shared volume to Nginx path
+      - ./letsencrypt:/etc/letsencrypt
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - page-server
     networks:
       - backend-network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt  # Certificate storage
+      - ./letsencrypt_data:/data/letsencrypt
+    environment:
+      - MY_EMAIL=${MY_EMAIL}
+      - MY_DOMAIN=${MY_DOMAIN}
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/data/letsencrypt --email ${MY_EMAIL} --agree-tos --no-eff-email --force-renewal -d ${MY_DOMAIN},${MY_DOMAIN}
