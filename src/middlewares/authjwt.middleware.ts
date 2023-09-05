@@ -15,21 +15,20 @@ export async function authToken(req: Request, res: Response, next: NextFunction)
 
 		if(!token) {
 			logger.error("The token is missing while trying to authenticate.")
-			res.send({
+			return res.status(401).send({
 				statusCode: 401,
 				message: "Try adding a token header"
 			})
-
-		} else {
-
-			const decoded = jwt.verify(token, SECRET_KEY);
-			(req as CustomRequest).token = decoded
 		}
 
-		next()
-	} catch (err) {
+		const decoded = jwt.verify(token, SECRET_KEY);
+		(req as CustomRequest).token = decoded
 
-		res.send({
+		next()
+		return Promise.resolve()
+	} catch (err) {
+		logger.error("Authentication failed: ", err);
+		return res.status(401).send({
 			statusCode: 401,
 			message: "Authenticate again please."
 		})

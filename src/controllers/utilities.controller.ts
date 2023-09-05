@@ -12,8 +12,7 @@ export async function health(_req: Request, res: Response): Promise<void> {
 		statusCode: 200,
 		health: "Up and running",
 		route: "Responding a GET call in the route of api/v1/health_check/"
-	});
-	return;
+	})
 
 }
 
@@ -28,14 +27,6 @@ export async function sendFormResults(req: Request, res: Response): Promise<void
 	if(!req.body) {
 		res.status(500).send("No body for the new form provided")
 	}
-
-	//Here we have the functionality in order to store the form, although this is not very GDPR-compliant and creates a vulnerability
-	// const [err, result] = await wrapPromise(storFormToDb(req.body.data as form))
-
-	// if(err || !result) {
-	// 	return handleServerError(res, 500, String(err))
-	// }
-
 
 	const [err, result] = await wrapPromise(mailer(req.body.data as form))
 
