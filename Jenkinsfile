@@ -32,8 +32,7 @@ pipeline {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
                         npm --version
-                        npm ci && cd client && npm ci
-                        npm run build
+                        npm ci && cd client && npm ci && npm run build
                     '''
                 }
             }
