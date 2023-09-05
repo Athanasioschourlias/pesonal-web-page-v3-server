@@ -100,7 +100,7 @@ pipeline {
                 docker stop deployer || true
                 docker rm page-db || true
                 docker rm deployer || true
-                docker system prune -a
+                docker system prune -a -f
             '''
         }
     }
