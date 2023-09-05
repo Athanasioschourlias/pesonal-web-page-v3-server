@@ -98,9 +98,9 @@ pipeline {
             // Actions that should be taken regardless of the build status
             sh '''
                 docker stop page-db || true
-                docker stop deployer-db || true
+                docker stop deployer || true
                 docker rm page-db || true
-                docker rm deployer-db || true
+                docker rm deployer || true
                 docker system prune -a
             '''
         }
