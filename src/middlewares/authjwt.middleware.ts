@@ -27,7 +27,7 @@ export async function authToken(req: Request, res: Response, next: NextFunction)
 		next()
 		return Promise.resolve()
 	} catch (err) {
-		logger.error("Authentication failed: ", err);
+		logger.error("Authentication failed: ", err)
 		return res.status(401).send({
 			statusCode: 401,
 			message: "Authenticate again please."
