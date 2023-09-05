@@ -33,6 +33,7 @@ pipeline {
                     sh '''
                         npm --version
                         npm ci && cd client && npm ci
+                        npm run build
                     '''
                 }
             }
@@ -43,16 +44,6 @@ pipeline {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
                         npm run lint
-                    '''
-                }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                nodejs(nodeJSInstallationName: '17.0.0') {
-                    sh '''
-                        npm run build
                     '''
                 }
             }
@@ -87,9 +78,10 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY')]) {
                         // Run Ansible playbook inside Docker container
                         sh '''
-                            docker run --rm \
+                            docker run \
                             -v $(pwd)/ansible:/ansible \
                             -v ${SSH_KEY}:/root/.ssh/id_rsa \
+                            --name deployer \
                             -w /ansible quay.io/ansible/ansible-runner:latest \
                             ansible-playbook deploy_docker.yml
                         '''
@@ -104,7 +96,9 @@ pipeline {
             // Actions that should be taken regardless of the build status
             sh '''
                 docker stop page-db || true
+                docker stop deployer-db || true
                 docker rm page-db || true
+                docker rm deployer-db || true
             '''
         }
     }
