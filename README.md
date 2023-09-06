@@ -147,7 +147,7 @@
 - We can also run a specific number of migration scripts by writing
 
   ```bash
-  db-migrate up -c 'number' --config './src/config/database.json' -e 'env'
+  db-migrate up -c number --config './src/config/database.json' -e 'env'
   ```
 
 ### Migrate down
