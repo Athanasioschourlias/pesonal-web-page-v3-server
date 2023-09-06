@@ -5,7 +5,6 @@ volumes:
   client-images:
   static-client:
   letsencrypt:
-  letsencrypt_data:
 
 networks:
   backend-network:
@@ -45,30 +44,18 @@ services:
     networks:
       - backend-network
 
-  nginx:
-    container_name: personal_webpage_nginx
-    image: nginx:latest
-    volumes:
-      - ../nginx/nginx_docker.conf:/etc/nginx/nginx.conf
-      - static-client:/etc/html/www/static/client
-      - letsencrypt:/etc/letsencrypt
-      - letsencrypt_data:/data/letsencrypt  # Shared volume
+  web-server:
+    image: staticfloat/nginx-certbot
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - CERTBOT_EMAIL=${MY_EMAIL}
+      - CERTBOT_DOMAIN=${MY_DOMAIN}
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - static-client:/usr/share/nginx/html:ro
     depends_on:
       - page-server
     networks:
       - backend-network
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - letsencrypt:/etc/letsencrypt  # Certificate storage
-      - letsencrypt_data:/data/letsencrypt  # Shared volume
-    environment:
-      - MY_EMAIL=${MY_EMAIL}
-      - MY_DOMAIN=${MY_DOMAIN}
-    depends_on:
-      - nginx
-    command: certonly --webroot --webroot-path=/data/letsencrypt --agree-tos --email ${MY_EMAIL} --force-renewal -d ${MY_DOMAIN}
