@@ -5,11 +5,11 @@
   vars:
     ansible_ssh_user: "root"
     compose_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/docker/docker-compose.prod.yml"
-    nginx_conf_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/nginx/nginx_docker.conf"
+    nginx_conf_url: "https://raw.githubusercontent.com/Athanasioschourlias/pesonal-web-page-v3-server/devops/nginx/user_conf.d/nginx_docker.conf"
     compose_dest: "/opt/docker-compose/"
     compose_file: "docker-compose.prod.yml"
     env_name: ".env"
-    nginx_conf_dest: "/opt/nginx/nginx_docker.conf"
+    nginx_conf_dest: "/opt/nginx/user_conf.d/nginx_docker.conf"
     node_env: "production"
     port: "3000"
     exposed_port: "3000"
@@ -27,9 +27,8 @@
           3064326333656239380a656565383333653463303061346430316561663534656361343630316464
           32346266633733396430623961613565663935333238396236396166333836336662
     smtp_sender: "thanos.chourlias+form@gmail.com"
-    api_base_url: http://devops-docker.red-net.gr/api/v1/
+    api_base_url: https://devops-docker.red-net.gr/api/v1/
     my_email: "chmaikos@red-net.gr"
-    my_domain: "devops-docker.red-net.gr"
 
   tasks:
     - name: Fetch Docker Compose file from GitHub

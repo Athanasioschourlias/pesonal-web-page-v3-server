@@ -2,9 +2,8 @@ version: "3.9"
 
 volumes:
   webpage-db-data:
-  client-images:
   static-client:
-  letsencrypt:
+  nginx_secrets:
 
 networks:
   backend-network:
@@ -12,7 +11,7 @@ networks:
 
 services:
   page-db:
-    container_name: personal_web_page_dev_db
+    container_name: database
     image: mongo:latest
     restart: always
     volumes:
@@ -21,7 +20,8 @@ services:
       - backend-network
 
   page-server:
-    container_name: personal_webpage_dev_server
+    container_name: backend
+    restart: always
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
@@ -37,24 +37,25 @@ services:
       API_BASE_URL: ${API_BASE_URL}
     image: chmaikos/devops_hua:latest
     volumes:
-      - client-images:/usr/src/app/build/client/images
-      - static-client:/usr/src/app/build/client  # Map static files to shared volume
+      - static-client:/usr/src/app/build/client
     depends_on:
       - page-db
     networks:
       - backend-network
 
-  web-server:
-    image: staticfloat/nginx-certbot
-    ports:
-      - "80:80"
-      - "443:443"
+  nginx:
+    image: jonasal/nginx-certbot:latest
+    container_name: frontend
+    restart: unless-stopped
     environment:
-      - CERTBOT_EMAIL=${MY_EMAIL}
-      - CERTBOT_DOMAIN=${MY_DOMAIN}
+      CERTBOT_EMAIL: ${MY_EMAIL}
+    ports:
+      - 80:80
+      - 443:443
     volumes:
-      - letsencrypt:/etc/letsencrypt
-      - static-client:/usr/share/nginx/html:ro
+      - static-client:/usr/src/app/build/client
+      - nginx_secrets:/etc/letsencrypt
+      - ../nginx/user_conf.d:/etc/nginx/user_conf.d
     depends_on:
       - page-server
     networks:
