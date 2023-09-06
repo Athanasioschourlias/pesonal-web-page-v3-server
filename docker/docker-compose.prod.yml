@@ -71,4 +71,4 @@ services:
       - MY_DOMAIN=${MY_DOMAIN}
     depends_on:
       - nginx
-    command: certonly --webroot --webroot-path=/data/letsencrypt --agree-tos --no-eff-email --force-renewal -d ${MY_DOMAIN}
+    command: certonly --webroot --webroot-path=/data/letsencrypt --agree-tos --email ${MY_EMAIL} --force-renewal -d ${MY_DOMAIN}
