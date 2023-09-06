@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-env-vars
+  namespace: devops
+data:
+  API_BASE_URL: "http://devops.red-net.gr/api/v1/"
+  DB_CONN_STRING: "mongodb://page-db:27017"
+  DB_NAME: "blogDb"
+  EXPOSED_PORT: "3000"
+  NODE_ENV: "production" # For example, 'development' or 'production'
+  PORT: "3000"
+  SMTP_HOST: "smtp.gmail.com"
+  SMTP_PASSWORD: "your-smtp-password"
+  SMTP_PORT: "587"
+  SMTP_SENDER: "thanos.chourlias+form@gmail.com"
+  SMTP_USERNAME: "thanos.chourlias+form@gmail.com"
+  TOKEN_SECRET: "123"

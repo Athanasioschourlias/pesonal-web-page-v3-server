@@ -1,41 +1,9 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: client-images
-  name: client-images
-  namespace: devops
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: webpage-db-data
-  name: webpage-db-data
-  namespace: devops
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -f ../docker/docker-compose.prod.yml
-    kompose.version: 1.30.0 (9d8dcb518)
+    kompose.version: 1.30.0 (HEAD)
   creationTimestamp: null
   labels:
     io.kompose.service: page-db
@@ -52,7 +20,7 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert -f ../docker/docker-compose.prod.yml
-        kompose.version: 1.30.0 (9d8dcb518)
+        kompose.version: 1.30.0 (HEAD)
       creationTimestamp: null
       labels:
         io.kompose.network/docker-backend-network: "true"
@@ -60,7 +28,7 @@ spec:
     spec:
       containers:
         - image: mongo:latest
-          name: personal-web-page-dev-db
+          name: database
           resources: {}
           volumeMounts:
             - mountPath: /data/db
@@ -97,7 +65,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -f ../docker/docker-compose.prod.yml
-    kompose.version: 1.30.0 (9d8dcb518)
+    kompose.version: 1.30.0 (HEAD)
   creationTimestamp: null
   labels:
     io.kompose.service: page-server
@@ -114,32 +82,40 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert -f ../docker/docker-compose.prod.yml
-        kompose.version: 1.30.0 (9d8dcb518)
+        kompose.version: 1.30.0 (HEAD)
       creationTimestamp: null
       labels:
         io.kompose.network/docker-backend-network: "true"
         io.kompose.service: page-server
     spec:
+      initContainers:
+      - name: init-copy-static-client
+        image: chmaikos/devops_hua:latest
+        securityContext:
+          runAsUser: 0
+        command: ["sh", "-c", "cp -r /usr/src/app/build/client/* /shared-data/"]
+        volumeMounts:
+          - mountPath: /shared-data
+            name: static-client
       containers:
-        - env:
-            - name: NODE_ENV
-              value: production
-            - name: TOKEN_SECRET
-              value: "123"
+        - envFrom:
+          - configMapRef:
+              name: app-env-vars
+          env:
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: smtp-secret
+                key: SMTP_PASSWORD
           image: chmaikos/devops_hua:latest
-          name: personal-webpage-dev-server
-          ports:
-            - containerPort: 3000
-              protocol: TCP
+          imagePullPolicy: Always
+          name: backend
           resources: {}
-          volumeMounts:
-            - mountPath: /usr/src/app/build/client/images
-              name: client-images
       restartPolicy: Always
       volumes:
-        - name: client-images
+        - name: static-client
           persistentVolumeClaim:
-            claimName: client-images
+            claimName: static-client
 status: {}
 ---
 apiVersion: v1
@@ -160,8 +136,78 @@ spec:
       targetPort: 3000
   selector:
     io.kompose.service: page-server
-status:
-  loadBalancer: {}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: static-client
+  name: static-client
+  namespace: devops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: webpage-db-data
+  name: webpage-db-data
+  namespace: devops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-static
+  namespace: devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-static
+  template:
+    metadata:
+      labels:
+        app: nginx-static
+    spec:
+      containers:
+      - name: nginx-static
+        image: nginx:alpine
+        volumeMounts:
+        - name: static-client
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: static-client
+        persistentVolumeClaim:
+          claimName: static-client
+---
+# nginx-static-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-static-service
+  namespace: devops
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx-static
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -177,13 +223,22 @@ spec:
   - host: devops.red-net.gr
     http:
       paths:
-      - path: /
+      # For /api, forward to page-server
+      - path: /api/
         pathType: Prefix
         backend:
           service:
             name: page-server
             port:
               number: 3000
+      # For everything else, serve static files
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-static-service
+            port:
+              number: 80
   tls:
   - hosts:
     - devops.red-net.gr
