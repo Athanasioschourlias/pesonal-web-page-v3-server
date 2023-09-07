@@ -69,27 +69,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Run Ansible Playbook') {
-            steps {
-                script {
-                    // Retrieve credentials from Jenkins credentials manager
-                    withCredentials([sshUserPrivateKey(credentialsId: 'DevopsDockerSSH', keyFileVariable: 'SSH_KEY'),
-                                    file(credentialsId: 'AnsibleVault', variable: 'VAULT_PASS_FILE')]) {
-                        // Run Ansible playbook inside Docker container
-                        sh '''
-                            docker run \
-                            -v $(pwd)/ansible:/ansible \
-                            -v ${SSH_KEY}:/root/.ssh/id_rsa \
-                            -v ${VAULT_PASS_FILE}:/ansible/vault_pass.txt \
-                            --name deployer \
-                            -w /ansible quay.io/ansible/ansible-runner:latest \
-                            ansible-playbook --vault-password-file /ansible/vault_pass.txt deploy_docker.yml
-                        '''
-                    }
-                }
-            }
-        }
     }
 
     post {
@@ -97,9 +76,7 @@ pipeline {
             // Actions that should be taken regardless of the build status
             sh '''
                 docker stop page-db || true
-                docker stop deployer || true
                 docker rm page-db || true
-                docker rm deployer || true
                 docker system prune -a -f
             '''
         }
