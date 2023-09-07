@@ -1,4 +1,0 @@
-[submodule "client"]
-	path = client
-	url = git@github.com:Athanasioschourlias/pesonal-web-page-v3-client.git
-	branch = feature/PWPS-19

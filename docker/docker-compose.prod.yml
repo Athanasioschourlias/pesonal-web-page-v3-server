@@ -35,28 +35,8 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_SENDER: ${SMTP_SENDER}
       API_BASE_URL: ${API_BASE_URL}
-    image: chmaikos/devops_hua:latest
-    volumes:
-      - static-client:/usr/src/app/build/client
+    image: chmaikos/devops-back:latest
     depends_on:
       - page-db
-    networks:
-      - backend-network
-
-  nginx:
-    image: jonasal/nginx-certbot:latest
-    container_name: frontend
-    restart: unless-stopped
-    environment:
-      CERTBOT_EMAIL: ${MY_EMAIL}
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - static-client:/etc/html/www/static/client
-      - nginx_secrets:/etc/letsencrypt
-      - ../nginx/user_conf.d:/etc/nginx/user_conf.d
-    depends_on:
-      - page-server
     networks:
       - backend-network

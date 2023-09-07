@@ -13,9 +13,8 @@ pipeline {
         SMTP_USERNAME="thanos.chourlias+form@gmail.com"
         SMTP_PASSWORD="${SMTP_PASSWORD_DEVOPS_HUA}"
         SMTP_SENDER="thanos.chourlias+form@gmail.com"
-        DOCKER_IMAGE="chmaikos/devops_hua"
+        DOCKER_IMAGE="chmaikos/devops-back"
         DOCKER_TAG="latest"
-        API_BASE_URL="http://dev-thanos.red-net.gr/api/v1/"
     }
 
     stages {
@@ -33,7 +32,7 @@ pipeline {
                 nodejs(nodeJSInstallationName: '17.0.0') {
                     sh '''
                         npm --version
-                        npm ci && cd client && npm ci && npm run build
+                        npm ci && npm run build
                     '''
                 }
             }
