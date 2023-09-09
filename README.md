@@ -14,7 +14,6 @@
     - [Migrate up](#migrate-up)
     - [Migrate down](#migrate-down)
   - [Jenkins](#jenkins)
-  - [Kubernetes](#kubernetes)
   - [Production deployment](#production-deployment)
 
 ## Docker
@@ -51,7 +50,7 @@
   and run
 
   ```bash
-  docker build -f ./dockerfile-name -t hub-user/image-name:tag ../../
+  docker build -f ./dockerfiles/dockerfile-name -t hub-user/image-name:tag ../../
   ```
 
   _(The "../../", is setting the docker context for the build.)_
@@ -67,13 +66,13 @@
 - To start the server in a development enviroment
 
   ```bash
-  docker-compose -p servername --env-file ../src/.env -f docker-compose.yml up --build -d
+  docker-compose -p servername --env-file .env -f docker-compose.yml up --build -d
   ```
 
 - To Stop and remove the containers
 
   ```bash
-  docker-compose -p servername --env-file ../src/.env -f docker-compose.yml up --build -d
+  docker-compose -p servername --env-file .env -f docker-compose.yml up --build -d
   ```
 
 ### Testing Production
@@ -84,10 +83,8 @@
 
   ```bash
   cd scripts
-  ./deploy.sh
+  ./build.sh
   ```
-
-  _The deploy script has the docker compose command included in the end but it is commeted out. You can uncomment it to run the deploy and docker compose command at the same time._
 
   ```sh
   cd ../docker
@@ -179,39 +176,17 @@
 ## Jenkins
 
 ---
-
-- To know the status of jenkins:
-
-```bash
-sudo service jenkins status
-```
-
-- To start the jenkins:
-
-```bash
-sudo service jenkins start
-```
-
-- To stop jenkins:
-
-```bash
-sudo service jenkins stop
-```
-
-- To restart jenkins:
-
-```bash
-sudo service jenkins restart
-```
-
-## Kubernetes
-
----
+The project includes a Jenkinsfile that contains steps for building, running testing and pushing the latest version to docker-hub.  
+You can adjust the steps as needed. There is also a step that performs a rolling restart of the Kubernetes cluster when a new version is available.
 
 ## Production deployment
 
 ---
 
-In order to deploy our system in a production like environment we need to refer to the following repository
+If you wan to deploy a production stack of the whole app (Front+Back+Database), you can take a look at the deployment repository for easy deployment in:
 
- > [Web Page Config](https://github.com/Athanasioschourlias/personal-web-page-config)
+- VM
+- Docker Server
+- Kubernetes Cluster
+
+[Devops Project Deployment](https://github.com/chmaikos/pesonal-web-page-deployer)

@@ -2,8 +2,6 @@ version: "3.9"
 
 volumes:
   webpage-db-data:
-  client-images:
-  static-client:
 
 networks:
   backend-network:
@@ -36,23 +34,7 @@ services:
     build:
       context: .. #Very important it refers where the root will be for the build.
       dockerfile: docker/dockerfiles/Dockerfile.prod
-    volumes:
-      - client-images:/usr/src/app/build/client/images
-      - static-client:/usr/src/app/build/client  # Map static files to shared volume
     depends_on:
       - page-db
-    networks:
-      - backend-network
-
-  nginx:
-    container_name: personal_webpage_nginx
-    image: nginx:latest
-    volumes:
-      - ../nginx/nginx_docker.conf:/etc/nginx/nginx.conf
-      - static-client:/etc/html/www/static/client  # Map shared volume to Nginx path
-    ports:
-      - "80:80"  # Expose port 80 to the world
-    depends_on:
-      - page-server
     networks:
       - backend-network

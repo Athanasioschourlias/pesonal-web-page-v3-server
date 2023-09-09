@@ -34,7 +34,6 @@ services:
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_SENDER: ${SMTP_SENDER}
-      API_BASE_URL: ${API_BASE_URL}
     image: chmaikos/devops-back:latest
     depends_on:
       - page-db
