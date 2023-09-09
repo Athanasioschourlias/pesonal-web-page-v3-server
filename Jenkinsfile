@@ -73,7 +73,7 @@ pipeline {
         stage('Update running pods in production environment') {
             steps {
                 script {
-                    sh "kubectl rollout restart deployments/backend -n devops"
+                    sh "kubectl rollout restart deployments/page-server -n devops"
                 }
             }
         }
