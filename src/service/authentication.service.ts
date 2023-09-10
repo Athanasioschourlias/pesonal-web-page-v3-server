@@ -105,30 +105,24 @@ export async function __createAdmin(user: User): Promise<string | null> {
 		if(!res) {
 			return "There is another user with the same credentials"
 		} else {
-			return new Promise<string | null>((resolve, reject) => {
-				try {
-					const password = bcrypt.hash(user.password, 8)
-					if(!collections.users) {
-						return reject("The collection is missing from the database")
-					}
-
-					const userRes = collections.users.insertOne({
-						name: user.username,
-						role: user.role,
-						password: password,
-					})
-
-					logger.info(userRes)
-					if(userRes) {
-						return resolve("The user was created successfully")
-					} else {
-						return reject("The user could not be created")
-					}
-				} catch (error) {
-					logger.error(`Operation failed -> ${error}`)
-					return reject(`Operation failed -> ${error}`)
+			try {
+				const password = await bcrypt.hash(user.password, 8)
+				if(!collections.users) {
+					throw new Error("The collection is missing from the database")
 				}
-			})
+
+				const userRes = await collections.users.insertOne({
+					name: user.username,
+					role: user.role,
+					password: password,
+				})
+
+				logger.info(userRes)
+				return "The user was created successfully"
+			} catch (error) {
+				logger.error(`Operation failed -> ${error}`)
+				return Promise.reject(`Operation failed -> ${error}`)
+			}
 		}
 	} catch (err) {
 		logger.error(`There was a problem creating the user ${err}`)
