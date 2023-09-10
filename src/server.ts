@@ -7,6 +7,7 @@ import {existsSync} from "fs"
 import path from "path"
 import {connectToDatabase} from "./service/database.service"
 import cors from "cors"
+import {__createAdmin} from "./service/authentication.service"
 // import historyApiFallback from "connect-history-api-fallback"
 
 
@@ -34,12 +35,22 @@ connectToDatabase()
 		app.use("/", routes)
 
 		app.listen(config.PORT, function() {
-			logger.info(`Thanos web page server is listening on port -> ${config.PORT}`)
+			logger.info(`Web page server is listening on port -> ${config.PORT}`)
 		})
 	})
 	.catch((error: Error) => {
 		logger.error(`Databae connection failed -> ${error}`)
 	})
+
+__createAdmin({
+	"username": "admin",
+	"role": "admin",
+	"password": "1234"
+}).then(() => {
+	logger.info("The admin user has been created")
+}).catch( (err) => {
+	logger.error(`There was a problem while creating a user ${err}`)
+})
 
 //Error Handler
 //TODO-implement an error handler
@@ -62,3 +73,5 @@ if(existsSync(path.join(__dirname, "../public"))) {
 
 	})
 }
+
+

@@ -10,38 +10,48 @@ export async function register(user: User): Promise<string | null> {
 
 	collections.users?.findOne({
 		name: user.username
-	}).then((usr) => {
-		if(usr)
-			return new Promise(resolve => resolve("The Article created successfully"))
+	}).then((res) => {
+		if(!res)
+			return new Promise<string | null>(resolve => resolve("There is an other user with the same credentials"))
 		else
-			return new Promise(reject => reject("Failed to create the article"))
-	})
+			return new Promise<string | null>((resolve, reject) => {
 
-	return new Promise((resolve, reject) => {
+				//hashing the password and storing it to the users object
+				bcrypt.hash(user.password, 8).then((password) => {
 
-		//hashing the password and storing it to the users object
-		bcrypt.hash(user.password, 8).then((password) => {
+					if(!collections.users)
+						return reject("The collection is missing from the database")
 
-			if(!collections.users)
-				return reject("The collection is missing from the database")
+					collections.users.insertOne({
+						name: user.username,
+						role: user.role,
+						password: password
+					}).then((user) => {
+						logger.info(user)
+						if(user)
+							return resolve("The user was created successfully")
+						else
+							return reject("The user could not be created")
+					}).catch((error: Error) => {
+						logger.error(`Adding user to database failed -> ${error}`)
+						return reject(`Adding user to database failed -> ${error}`)
+					})
+				}).catch((error: Error) => {
+					logger.error(`Password hashing failed -> ${error}`)
+					return reject(`Password hashing failed -> ${error}`)
+				})
 
-			collections.users.insertOne({
-				name: user.username,
-				role: user.role,
-				password: password
-			}).then((user) => {
-				logger.info(user)
-				if(user)
-					return resolve("The user was created successfully")
-				else
-					return reject("The user could not be created")
-			}).catch((error: Error) => {
-				logger.error(`Adding user to database failed -> ${error}`)
 			})
-		})
-
-
+	}).catch((err) => {
+		return new Promise<string | null>(reject => reject(`There was a problem creating the user ${err}`))
 	})
+
+	logger.error("This is a promise that should never be returned fro registering the admin")
+	return new Promise<string | null>(
+		reject => reject("This is a promise that should never be returned fro registering the admin")
+	)
+
+
 }
 
 
@@ -87,4 +97,50 @@ export async function login(user: login_creds): Promise<string | null | verified
 		})
 
 	})
+}
+
+export async function __createAdmin(user: User): Promise<string | null> {
+
+	collections.users?.findOne({
+		name: user.username
+	}).then((res) => {
+		if(!res)
+			return new Promise<string | null>(resolve => resolve("There is an other user with the same credentials"))
+		else
+			return new Promise<string | null>((resolve, reject) => {
+
+				//hashing the password and storing it to the users object
+				bcrypt.hash(user.password, 8).then((password) => {
+
+					if(!collections.users)
+						return reject("The collection is missing from the database")
+
+					collections.users.insertOne({
+						name: user.username,
+						role: user.role,
+						password: password
+					}).then((user) => {
+						logger.info(user)
+						if(user)
+							return resolve("The user was created successfully")
+						else
+							return reject("The user could not be created")
+					}).catch((error: Error) => {
+						logger.error(`Adding user to database failed -> ${error}`)
+						return reject(`Adding user to database failed -> ${error}`)
+					})
+				}).catch((error: Error) => {
+					logger.error(`Password hashing failed -> ${error}`)
+					return reject(`Password hashing failed -> ${error}`)
+				})
+
+			})
+	}).catch((err) => {
+		return new Promise<string | null>(reject => reject(`There was a problem creating the user ${err}`))
+	})
+
+	logger.error("This is a promise that should never be returned fro registering the admin")
+	return new Promise<string | null>(
+		reject => reject("This is a promise that should never be returned fro registering the admin")
+	)
 }
