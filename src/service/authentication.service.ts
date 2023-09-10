@@ -75,7 +75,7 @@ export async function login(user: login_creds): Promise<string | null | verified
 export async function __createAdmin(user: User): Promise<string | null> {
 	try {
 		const res = await collections.users?.findOne({ name: user.username })
-		if(!res) {
+		if(res) {
 			return "There is another user with the same credentials"
 		} else {
 			try {
@@ -92,13 +92,13 @@ export async function __createAdmin(user: User): Promise<string | null> {
 
 				logger.info(userRes)
 				return "The user was created successfully"
-			} catch (error) {
-				logger.error(`Operation failed -> ${error}`)
-				return Promise.reject(`Operation failed -> ${error}`)
+			} catch (error: unknown) {
+				logger.error(`Operation failed -> ${String(error)}`)
+				return Promise.reject(`Operation failed -> ${String(error)}`)
 			}
 		}
-	} catch (err) {
-		logger.error(`There was a problem creating the user ${err}`)
-		return Promise.reject(`There was a problem creating the user ${err}`)
+	} catch (err: unknown) {
+		logger.error(`There was a problem creating the user ${String(err)}`)
+		return Promise.reject(`There was a problem creating the user ${String(err)}`)
 	}
 }
