@@ -39,47 +39,37 @@ export async function register(user: User): Promise<string | null> {
 }
 
 export async function login(user: login_creds): Promise<string | null | verifiedUser> {
+	try {
+		if(!user) {
+			throw new Error("No user details provided")
+		}
 
-	//Checking is the user provides a user or not
-	if(!user)
-		return new Promise(reject => reject("No user details provided"))
+		if(!collections.users) {
+			throw new Error("The collection is missing from the database")
+		}
 
-	return new Promise((_resolve, reject) => {
+		const foundUser = await collections.users.findOne({ name: user.username })
 
-		if(!collections.users)
-			return reject("The collection is missing from the database")
+		if(!foundUser) {
+			throw new Error("There is no such user with that username")
+		}
 
-		//searching for the user
-		collections.users.findOne({
-			name: user.username
-		}).then((foundUser) => {
+		const isMatch = bcrypt.compareSync(user.password, foundUser.password)
 
-			if(!foundUser) {
-				return reject("There is no such user with username")
-			}
+		if(isMatch) {
+			const token = jwt.sign({ _id: foundUser._id?.toString(), name: foundUser.username },
+			process.env.TOKEN_SECRET as string, {
+				expiresIn: "2 days",
+			})
 
-
-			const isMatch = bcrypt.compareSync(user.password, foundUser.password)
-
-
-			if(isMatch) {
-				// eslint-disable-next-line max-len
-				const token = jwt.sign({ _id: foundUser._id?.toString(), name: foundUser.username }, process.env.TOKEN_SECRET, {
-					expiresIn: "2 days",
-				})
-
-				return _resolve(
-					{ user: { username: foundUser.username, role: foundUser.role}, token: token }
-				)
-			} else {
-				reject("Password is not correct")
-			}
-
-		}).catch((error: Error) => {
-			logger.error(`There was an error while hashing -> ${error}`)
-		})
-
-	})
+			return { user: { username: foundUser.username, role: foundUser.role }, token: token }
+		} else {
+			throw new Error("Password is not correct")
+		}
+	} catch (error: unknown) {
+		logger.error(`Login failed -> ${(error as Error).message}`)
+		throw error
+	}
 }
 
 export async function __createAdmin(user: User): Promise<string | null> {
