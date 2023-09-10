@@ -76,8 +76,11 @@ export async function login(user: login_creds): Promise<string | null | verified
 export async function __createAdmin(user: User): Promise<string | null> {
 	try {
 		const res = await collections.users?.findOne({ name: user.username })
+
 		if(res) {
-			return "There is another user with the same credentials"
+
+			return Promise.reject("There is another user with the same credentials")
+
 		} else {
 			try {
 				const password = await bcrypt.hash(user.password, 8)
@@ -92,10 +95,13 @@ export async function __createAdmin(user: User): Promise<string | null> {
 				})
 
 				logger.info(userRes)
-				return "The user was created successfully"
+				return Promise.reject("The user was created successfully")
+
 			} catch (error: unknown) {
+
 				logger.error(`Operation failed -> ${String(error)}`)
 				return Promise.reject(`Operation failed -> ${String(error)}`)
+
 			}
 		}
 	} catch (err: unknown) {
