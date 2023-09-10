@@ -9,7 +9,8 @@ import {login_creds, verifiedUser} from "../types/authentication types"
 export async function register(user: User): Promise<string | null> {
 	try {
 		const res = await collections.users?.findOne({ name: user.username })
-		if(!res) {
+
+		if(res) {
 			return "There is another user with the same credentials"
 		}
 
