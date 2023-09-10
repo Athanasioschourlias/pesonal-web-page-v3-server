@@ -50,26 +50,4 @@ __createAdmin({
 	logger.error(`There was a problem while creating a user ${err}`)
 })
 
-//Error Handler
-//TODO-implement an error handler
-
-/**
- * Here multiple things are happening:
- * Firstly, we are checking(synchronously) if a file exists in the given path
- * Then, we use the build in middleware of js to let express know there is a dist folder and assets of the vue build
-   static files from a directory located at the root of our project and its named dist.
- * Then for the default URI(/) we are loading the index.html file.
- **/
-if(existsSync(path.join(__dirname, "../public"))) {
-
-	app.use(express.static(path.join(__dirname, "../public")))
-	logger.info("Serving Static Files")
-
-	app.get("/", (_req, res) => {
-		res.sendFile(path.join(__dirname, "../public/index.html"))
-		logger.info("Serving Static Files")
-
-	})
-}
-
 
