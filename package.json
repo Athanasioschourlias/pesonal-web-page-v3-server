@@ -10,7 +10,7 @@
     "prod": "npm run start",
     "prebuild": "rm -rf ./build ./build_client",
     "build": "tsc",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest",
     "test:dev": "jest",
     "migrate": "db-migrate up",
