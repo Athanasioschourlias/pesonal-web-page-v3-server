@@ -13,10 +13,7 @@ export async function loginOne(req: Request, res: Response): Promise<void> {
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.send({
-		statusCode: 200,
-		data: result
-	})
+	res.send(result)
 
 
 }
@@ -29,9 +26,6 @@ export async function registerOne(req: Request, res: Response): Promise<void> {
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.send({
-		statusCode: 200,
-		data: result
-	})
+	res.send(result)
 
 }
