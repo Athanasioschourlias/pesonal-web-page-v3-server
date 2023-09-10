@@ -11,7 +11,7 @@ export async function register(user: User): Promise<string | null> {
 		const res = await collections.users?.findOne({ name: user.username })
 		if(!res) {
 			return "There is another user with the same credentials"
-		} 
+		}
 
 		try {
 			const password = await bcrypt.hash(user.password, 8)
@@ -58,9 +58,9 @@ export async function login(user: login_creds): Promise<string | null | verified
 
 		if(isMatch) {
 			const token = jwt.sign({ _id: foundUser._id?.toString(), name: foundUser.username },
-			process.env.TOKEN_SECRET as string, {
-				expiresIn: "2 days",
-			})
+				process.env.TOKEN_SECRET as string, {
+					expiresIn: "2 days",
+				})
 
 			return { user: { username: foundUser.username, role: foundUser.role }, token: token }
 		} else {
