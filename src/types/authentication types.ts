@@ -13,8 +13,10 @@ type login_creds={
 	password: string
 }
 
+type LoginResult = { message: string; status: number } | verifiedUser;
 
 export {
 	verifiedUser,
-	login_creds
+	login_creds,
+	LoginResult
 }

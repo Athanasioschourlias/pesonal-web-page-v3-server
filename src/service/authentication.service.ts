@@ -4,7 +4,7 @@ import logger from "../common/logger"
 import bcrypt from "bcrypt"
 import process from "process"
 import jwt from "jsonwebtoken"
-import {login_creds, verifiedUser} from "../types/authentication types"
+import {login_creds, LoginResult} from "../types/authentication types"
 
 async function createJWT(id: string, username: string): Promise<string> {
 	return jwt.sign({ _id: id, name: username }, process.env.TOKEN_SECRET as string, {
@@ -44,9 +44,6 @@ export function register(user: User): Promise<{ message: string; status: number 
 			return { message: `Server error -> ${error}`, status: 500 }
 		})
 }
-
-// I dont think this is correct but it works
-type LoginResult = { message: string; status: number } | verifiedUser;
 
 export function login(user: login_creds): Promise<LoginResult> {
 	if(!user) {
@@ -113,5 +110,3 @@ export function __createAdmin(user: User): Promise<{ message: string; status: nu
 			return Promise.reject({ message: String(error), status: 500 })
 		})
 }
-
-
