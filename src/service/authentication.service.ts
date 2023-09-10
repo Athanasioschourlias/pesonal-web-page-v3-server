@@ -100,47 +100,38 @@ export async function login(user: login_creds): Promise<string | null | verified
 }
 
 export async function __createAdmin(user: User): Promise<string | null> {
+    try {
+        let res = await collections.users?.findOne({ name: user.username });
+        if (!res) {
+            return "There is another user with the same credentials";
+        } else {
+            return new Promise<string | null>(async (resolve, reject) => {
+                try {
+                    let password = await bcrypt.hash(user.password, 8);
+                    if (!collections.users) {
+                        return reject("The collection is missing from the database");
+                    }
 
-	collections.users?.findOne({
-		name: user.username
-	}).then((res) => {
-		if(!res)
-			return new Promise<string | null>(resolve => resolve("There is an other user with the same credentials"))
-		else
-			return new Promise<string | null>((resolve, reject) => {
+                    let userRes = await collections.users.insertOne({
+                        name: user.username,
+                        role: user.role,
+                        password: password
+                    });
 
-				//hashing the password and storing it to the users object
-				bcrypt.hash(user.password, 8).then((password) => {
-
-					if(!collections.users)
-						return reject("The collection is missing from the database")
-
-					collections.users.insertOne({
-						name: user.username,
-						role: user.role,
-						password: password
-					}).then((user) => {
-						logger.info(user)
-						if(user)
-							return resolve("The user was created successfully")
-						else
-							return reject("The user could not be created")
-					}).catch((error: Error) => {
-						logger.error(`Adding user to database failed -> ${error}`)
-						return reject(`Adding user to database failed -> ${error}`)
-					})
-				}).catch((error: Error) => {
-					logger.error(`Password hashing failed -> ${error}`)
-					return reject(`Password hashing failed -> ${error}`)
-				})
-
-			})
-	}).catch((err) => {
-		return new Promise<string | null>(reject => reject(`There was a problem creating the user ${err}`))
-	})
-
-	logger.error("This is a promise that should never be returned fro registering the admin")
-	return new Promise<string | null>(
-		reject => reject("This is a promise that should never be returned fro registering the admin")
-	)
+                    logger.info(userRes);
+                    if (userRes) {
+                        return resolve("The user was created successfully");
+                    } else {
+                        return reject("The user could not be created");
+                    }
+                } catch (error: any) {
+                    logger.error(`Operation failed -> ${error}`);
+                    return reject(`Operation failed -> ${error}`);
+                }
+            });
+        }
+    } catch (err: any) {
+        logger.error(`There was a problem creating the user ${err}`);
+        return Promise.reject(`There was a problem creating the user ${err}`);
+    }
 }

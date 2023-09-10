@@ -49,5 +49,3 @@ __createAdmin({
 }).catch( (err) => {
 	logger.error(`There was a problem while creating a user ${err}`)
 })
-
-
