@@ -7,29 +7,25 @@ import jwt from "jsonwebtoken"
 import {login_creds, verifiedUser} from "../types/authentication types"
 
 export async function register(user: User): Promise<string> {
-	try {
-		const res = await collections.users?.findOne({ name: user.username })
-		if(res) {
-			throw new Error("There is another user with the same credentials")
-		}
-		
-		const password = await bcrypt.hash(user.password, 8)
-		
-		if(!collections.users) {
-			throw new Error("The collection is missing from the database")
-		}
-
-		const userRes = await collections.users.insertOne({
-			name: user.username,
-			role: user.role,
-			password: password,
-		})
-
-		logger.info(userRes)
-		return "The user was created successfully"
-	} catch (error: any) {
-		throw new Error(`Operation failed -> ${error}`)
+	const res = await collections.users?.findOne({ name: user.username })
+	if(res) {
+		throw new Error("There is another user with the same credentials")
 	}
+	
+	const password = await bcrypt.hash(user.password, 8)
+	
+	if(!collections.users) {
+		throw new Error("The collection is missing from the database")
+	}
+
+	const userRes = await collections.users.insertOne({
+		name: user.username,
+		role: user.role,
+		password: password,
+	})
+
+	logger.info(userRes)
+	return "The user was created successfully"
 }
 
 async function createJWT(id: string, username: string): Promise<string> {
@@ -60,26 +56,22 @@ export async function login(user: login_creds): Promise<verifiedUser> {
 }
 
 export async function __createAdmin(user: User): Promise<string> {
-	try {
-		const res = await collections.users?.findOne({ name: user.username })
-		if(res) {
-			throw new Error("There is another user with the same credentials")
-		}
-        
-		const password = await bcrypt.hash(user.password, 8)
-		if(!collections.users) {
-			throw new Error("The collection is missing from the database")
-		}
-
-		const userRes = await collections.users.insertOne({
-			name: user.username,
-			role: user.role,
-			password: password,
-		})
-
-		logger.info(userRes)
-		return "The admin was created successfully"
-	} catch (error: unknown) {
-		throw new Error(`Operation failed -> ${String(error)}`)
+	const res = await collections.users?.findOne({ name: user.username })
+	if(res) {
+		throw new Error("There is another user with the same credentials")
 	}
+	
+	const password = await bcrypt.hash(user.password, 8)
+	if(!collections.users) {
+		throw new Error("The collection is missing from the database")
+	}
+
+	const userRes = await collections.users.insertOne({
+		name: user.username,
+		role: user.role,
+		password: password,
+	})
+
+	logger.info(userRes)
+	return "The admin was created successfully"
 }

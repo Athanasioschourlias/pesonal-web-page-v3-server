@@ -43,7 +43,7 @@ connectToDatabase()
 		}).then((message) => {
 			logger.info(message)
 		}).catch( (err) => {
-			logger.error(`There was a problem while creating a user ${err}`)
+			logger.error(err)
 		})
 	})
 	.catch((error: Error) => {
