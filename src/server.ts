@@ -8,7 +8,7 @@ import path from "path"
 import {connectToDatabase} from "./service/database.service"
 import cors from "cors"
 import {__createAdmin} from "./service/authentication.service"
-// import historyApiFallback from "connect-history-api-fallback"
+
 
 
 const environment = config.NODE_ENV || "development"
@@ -37,20 +37,20 @@ connectToDatabase()
 		app.listen(config.PORT, function() {
 			logger.info(`Web page server is listening on port -> ${config.PORT}`)
 		})
+
+		__createAdmin({
+			"username": "admin",
+			"role": "admin",
+			"password": "1234"
+		}).then(() => {
+			logger.info("The admin user has been created")
+		}).catch( (err) => {
+			logger.error(`There was a problem while creating a user ${err}`)
+		})
 	})
 	.catch((error: Error) => {
 		logger.error(`Databae connection failed -> ${error}`)
 	})
-
-__createAdmin({
-	"username": "admin",
-	"role": "admin",
-	"password": "1234"
-}).then(() => {
-	logger.info("The admin user has been created")
-}).catch( (err) => {
-	logger.error(`There was a problem while creating a user ${err}`)
-})
 
 //Error Handler
 //TODO-implement an error handler
