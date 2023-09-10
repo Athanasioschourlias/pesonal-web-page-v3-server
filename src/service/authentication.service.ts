@@ -11,7 +11,7 @@ export async function register(user: User): Promise<string | null> {
 	collections.users?.findOne({
 		name: user.username
 	}).then((res) => {
-		if(!res)
+		if(res)
 			return new Promise<string | null>(resolve => resolve("There is an other user with the same credentials"))
 		else
 			return new Promise<string | null>((resolve, reject) => {
@@ -50,8 +50,6 @@ export async function register(user: User): Promise<string | null> {
 	return new Promise<string | null>(
 		reject => reject("This is a promise that should never be returned fro registering the admin")
 	)
-
-
 }
 
 
@@ -104,7 +102,7 @@ export async function __createAdmin(user: User): Promise<string | null> {
 	collections.users?.findOne({
 		name: user.username
 	}).then((res) => {
-		if(!res)
+		if(res)
 			return new Promise<string | null>(resolve => resolve("There is an other user with the same credentials"))
 		else
 			return new Promise<string | null>((resolve, reject) => {
