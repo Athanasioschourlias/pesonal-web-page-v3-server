@@ -97,7 +97,7 @@ export async function login(user: login_creds): Promise<string | null | verified
 	})
 }
 
-export async function __createAdmin(user: User): Promise<string | null> {
+export async function __createAdmin(user: User): Promise<void> {
 
 	collections.users?.findOne({
 		name: user.username
@@ -137,8 +137,4 @@ export async function __createAdmin(user: User): Promise<string | null> {
 		return new Promise<string | null>(reject => reject(`There was a problem creating the user ${err}`))
 	})
 
-	logger.error("This is a promise that should never be returned fro registering the admin")
-	return new Promise<string | null>(
-		reject => reject("This is a promise that should never be returned fro registering the admin")
-	)
 }
