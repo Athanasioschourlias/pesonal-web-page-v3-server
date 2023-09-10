@@ -6,27 +6,29 @@ import process from "process"
 import jwt from "jsonwebtoken"
 import {login_creds, verifiedUser} from "../types/authentication types"
 
-export async function register(user: User): Promise<string> {
-	const res = await collections.users?.findOne({ name: user.username })
-	if(res) {
-		throw new Error("There is another user with the same credentials")
-	}
-	
-	const password = await bcrypt.hash(user.password, 8)
-	
-	if(!collections.users) {
-		throw new Error("The collection is missing from the database")
-	}
+export function register(user: User): Promise<string> {
+	if(!collections.users) return Promise.reject(new Error("The collection is missing from the database"))
 
-	const userRes = await collections.users.insertOne({
-		name: user.username,
-		role: user.role,
-		password: password,
-	})
-
-	logger.info(userRes)
-	return "The user was created successfully"
+	return collections.users.findOne({ name: user.username })
+		.then(res => {
+			if(res) return Promise.reject(new Error("There is another user with the same credentials"))
+            
+			return bcrypt.hash(user.password, 8)
+		})
+		.then(hash => {
+			return collections.users!.insertOne({
+				name: user.username,
+				role: user.role,
+				password: hash,
+			})
+		})
+		.then(userRes => {
+			logger.info(userRes)
+			return "The user was created successfully"
+		})
+		.catch((error: unknown) => Promise.reject(error))
 }
+
 
 async function createJWT(id: string, username: string): Promise<string> {
 	return jwt.sign({ _id: id, name: username }, process.env.TOKEN_SECRET as string, {
@@ -38,40 +40,49 @@ async function comparePassword(providedPassword: string, storedPassword: string)
 	return bcrypt.compareSync(providedPassword, storedPassword)
 }
 
-export async function login(user: login_creds): Promise<verifiedUser> {
-	if(!user) throw new Error("No user details provided")
-
-	if(!collections.users) throw new Error("The collection is missing from the database")
-
-	const foundUser = await collections.users.findOne({ name: user.username })
-
-	if(!foundUser) throw new Error("There is no such user with that username")
-
-	const isMatch = await comparePassword(user.password, foundUser.password)
-	if(!isMatch) throw new Error("Password is not correct")
-
-	const token = await createJWT(foundUser._id?.toString() ?? "", foundUser.username)
-
-	return { user: { username: foundUser.username, role: foundUser.role }, token }
-}
-
-export async function __createAdmin(user: User): Promise<string> {
-	const res = await collections.users?.findOne({ name: user.username })
-	if(res) {
-		throw new Error("There is another user with the same credentials")
-	}
+export function login(user: login_creds): Promise<verifiedUser | null> {
+	if(!user) return Promise.reject(new Error("No user details provided"))
 	
-	const password = await bcrypt.hash(user.password, 8)
-	if(!collections.users) {
-		throw new Error("The collection is missing from the database")
-	}
+	if(!collections.users) return Promise.reject(new Error("The collection is missing from the database"))
 
-	const userRes = await collections.users.insertOne({
-		name: user.username,
-		role: user.role,
-		password: password,
-	})
+	return collections.users.findOne({ name: user.username })
+		.then(foundUser => {
+			if(!foundUser) return Promise.reject(new Error("There is no such user with that username"))
 
-	logger.info(userRes)
-	return "The admin was created successfully"
+			return comparePassword(user.password, foundUser.password)
+				.then(isMatch => {
+					if(!isMatch) return Promise.reject(new Error("Password is not correct"))
+					
+					return createJWT(foundUser._id?.toString() ?? "", foundUser.username)
+						.then(token => ({
+							user: { username: foundUser.username, role: foundUser.role },
+							token,
+						}))
+				})
+		})
+		.catch((error: unknown) => Promise.reject(error))
 }
+
+export function __createAdmin(user: User): Promise<string> {
+	if(!collections.users) return Promise.reject(new Error("The collection is missing from the database"))
+
+	return collections.users.findOne({ name: user.username })
+		.then(res => {
+			if(res) return Promise.reject(new Error("There is another user with the same credentials"))
+
+			return bcrypt.hash(user.password, 8)
+		})
+		.then(hash => {
+			return collections.users!.insertOne({
+				name: user.username,
+				role: user.role,
+				password: hash,
+			})
+		})
+		.then(userRes => {
+			logger.info(userRes)
+			return "The admin was created successfully"
+		})
+		.catch((error: unknown) => Promise.reject(error))
+}
+
