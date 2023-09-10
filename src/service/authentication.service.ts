@@ -38,7 +38,6 @@ export async function register(user: User): Promise<string | null> {
 	}
 }
 
-
 export async function login(user: login_creds): Promise<string | null | verifiedUser> {
 
 	//Checking is the user provides a user or not

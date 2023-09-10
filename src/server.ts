@@ -10,7 +10,7 @@ import {__createAdmin} from "./service/authentication.service"
 
 
 const environment = config.NODE_ENV || "development"
-logger.info(`Initializing thanos webpage Server version: ${packageJson.version}. Enviroment: ${environment}`)
+logger.info(`Initializing thanos webpage Server version: ${packageJson.version}. Enviroment: ${environment}, Secrets: ${config.TOKEN_SECRET}`)
 
 
 const app: express.Application = express()

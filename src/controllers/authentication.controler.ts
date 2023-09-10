@@ -21,7 +21,6 @@ export async function loginOne(req: Request, res: Response): Promise<void> {
 
 }
 
-
 export async function registerOne(req: Request, res: Response): Promise<void> {
 
 	const [err, result] = await wrapPromise(register(req.body as User))
