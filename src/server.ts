@@ -40,8 +40,8 @@ connectToDatabase()
 			"username": "admin",
 			"role": "admin",
 			"password": "1234"
-		}).then(() => {
-			logger.info("The admin user has been created")
+		}).then((message) => {
+			logger.info(message)
 		}).catch( (err) => {
 			logger.error(`There was a problem while creating a user ${err}`)
 		})
