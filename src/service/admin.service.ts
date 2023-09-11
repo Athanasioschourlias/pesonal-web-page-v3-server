@@ -92,10 +92,11 @@ export async function deleteTechnicalArticle(id: string, category: string): Prom
 		if(id==="")
 			return reject("You need to provide an ID")
 
+
 		//TODO- maybe fix this type sometime
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		if(!collections[tech_article.category])
+		if(!collections[category])
 			return reject("There is no such category......For the moment! Sorry!!!")
 
 		const query = {_id: new ObjectID(id)}
