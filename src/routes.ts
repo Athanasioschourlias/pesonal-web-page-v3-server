@@ -12,7 +12,7 @@ import {
 	sendFormResults
 } from "./controllers/utilities.controller"
 import {addNewArticle, deleteArticleByid, editArticleById} from "./controllers/admin.controller"
-import {loginOne, registerOne} from "./controllers/authentication.controler"
+import {loginOne, registerAdmin, registerOne} from "./controllers/authentication.controler"
 import {authToken} from "./middlewares/authjwt.middleware"
 
 
@@ -67,6 +67,8 @@ admin.post("/articles/category",authToken, addNewArticle)
 admin.delete("/articles/id",authToken, deleteArticleByid)
 
 admin.put("/articles/id",authToken, editArticleById)
+
+admin.post("/register", authToken, registerAdmin)
 
 admin.get("/forms",authToken, getAllForms)
 
