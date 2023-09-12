@@ -4,7 +4,7 @@ import logger from "../common/logger"
 import bcrypt from "bcrypt"
 import process from "process"
 import jwt from "jsonwebtoken"
-import {login_creds, LoginResult} from "../types/authentication types"
+import {login_creds, verifiedUser} from "../types/authentication types"
 
 export async function register(user: User): Promise<string | null> {
 	try {
@@ -48,81 +48,64 @@ export async function register_admin(user: User): Promise<string | null> {
 			return "There is another user with the same credentials"
 		}
 
-async function comparePassword(providedPassword: string, storedPassword: string): Promise<boolean> {
-	return bcrypt.compareSync(providedPassword, storedPassword)
-}
+		try {
+			const password = await bcrypt.hash(user.password, 8)
 
-export function register(user: User): Promise<{ message: string; status: number }> {
-	if(!collections.users) {
-		return Promise.resolve({ message: "The collection is missing from the database", status: 500 })
-	}
-
-	return collections.users.findOne({ name: user.username })
-		.then(res => {
-			if(res) {
-				return { message: "There is another user with the same credentials", status: 200 }
+			if(!collections.users) {
+				throw new Error("The collection is missing from the database")
 			}
 
-			return bcrypt.hash(user.password, 8)
-				.then((hash) => {
-					return collections.users!.insertOne({
-						name: user.username,
-						role: user.role,
-						password: hash,
-					})
-				})
-				.then(userRes => {
-					logger.info(userRes)
-					return { message: "The user was created successfully", status: 200 }
-				})
-		})
-		.catch((error: unknown) => {
-			return { message: `Server error -> ${error}`, status: 500 }
-		})
+			const userRes = await collections.users.insertOne({
+				name: user.username,
+				role: user.role,
+				password: password,
+			})
+
+			logger.info(userRes)
+			return "The user was created successfully"
+		} catch (error) {
+			logger.error(`Operation failed -> ${error}`)
+			return Promise.reject(`Operation failed -> ${error}`)
+		}
+	} catch (err) {
+		logger.error(`There was a problem creating the user ${err}`)
+		return Promise.reject(`There was a problem creating the user ${err}`)
+	}
 }
 
-export function login(user: login_creds): Promise<LoginResult> {
-	if(!user) {
-		return Promise.resolve({ message: "No user details provided", status: 200 })
-	}
+export async function login(user: login_creds): Promise<string | null | verifiedUser> {
+	try {
+		if(!user) {
+			throw new Error("No user details provided")
+		}
 
-	if(!collections.users) {
-		return Promise.reject({ message: "The collection is missing from the database", status: 500 })
-	}
+		if(!collections.users) {
+			throw new Error("The collection is missing from the database")
+		}
 
-	return collections.users.findOne({ name: user.username })
-		.then((foundUser): Promise<LoginResult> => {
-			if(!foundUser) {
-				return Promise.resolve({ message: "There is no such user with that username", status: 200 })
-			}
+		const foundUser = await collections.users.findOne({ name: user.username })
 
-			return comparePassword(user.password, foundUser.password)
-				.then((isMatch): Promise<LoginResult> => {
-					if(!isMatch) {
-						return Promise.resolve({ message: "Password is not correct", status: 200 })
-					}
-                    
-					return createJWT(foundUser._id?.toString() ?? "", foundUser.username)
-						.then((token): LoginResult => {
-							return {
-								user: { username: foundUser.username, role: foundUser.role },
-								token,
-							}
-						})
-						.catch((error): Promise<LoginResult> => {
-							return Promise.reject({ message: String(error), status: 500 })
-						})
+		if(!foundUser) {
+			throw new Error("There is no such user with that username")
+		}
+
+		const isMatch = bcrypt.compareSync(user.password, foundUser.password)
+
+		if(isMatch) {
+			const token = jwt.sign({ _id: foundUser._id?.toString(), name: foundUser.username },
+				process.env.TOKEN_SECRET as string, {
+					expiresIn: "2 days",
 				})
-		})
-		.catch((error): Promise<LoginResult> => {
-			return Promise.reject({ message: String(error), status: 500 })
-		})
-}
 
-export function __createAdmin(user: User): Promise<{ message: string; status: number; }> {
-	if(!collections.users) {
-		return Promise.resolve({ message: "The collection is missing from the database", status: 500 })
+			return { user: { username: foundUser.username, role: foundUser.role }, token: token }
+		} else {
+			throw new Error("Password is not correct")
+		}
+	} catch (error: unknown) {
+		logger.error(`Login failed -> ${(error as Error).message}`)
+		throw error
 	}
+}
 
 export async function __createAdmin(user: User): Promise<string | null> {
 	try {

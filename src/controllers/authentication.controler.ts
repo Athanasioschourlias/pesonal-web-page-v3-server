@@ -13,9 +13,13 @@ export async function loginOne(req: Request, res: Response): Promise<void> {
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.send(result)
+	res.send({
+		statusCode: 200,
+		data: result
+	})
 
 }
+
 
 export async function registerOne(req: Request, res: Response): Promise<void> {
 
@@ -40,6 +44,9 @@ export async function registerAdmin(req: Request, res: Response): Promise<void> 
 		return handleServerError(res, 500, String(err))
 	}
 
-	res.send(result)
+	res.send({
+		statusCode: 200,
+		data: result
+	})
 
 }
