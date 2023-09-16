@@ -11,7 +11,12 @@ import {
 	health,
 	sendFormResults
 } from "./controllers/utilities.controller"
-import {addNewArticle, deleteArticleByid, editArticleById} from "./controllers/admin.controller"
+import {
+	addNewArticle,
+	deleteArticleByid, deleteUserById,
+	editArticleById, editUserById,
+	getAllUsers
+} from "./controllers/admin.controller"
 import {loginOne, registerAdmin, registerOne} from "./controllers/authentication.controler"
 import {authToken} from "./middlewares/authjwt.middleware"
 
@@ -71,6 +76,13 @@ admin.put("/articles/id",authToken, editArticleById)
 admin.post("/register", authToken, registerAdmin)
 
 admin.get("/forms",authToken, getAllForms)
+
+admin.get("/users/all",authToken, getAllUsers)
+
+admin.delete("/users/id",authToken, deleteUserById)
+
+admin.put("/users/id",authToken, editUserById)
+
 
 /** Utilities **/
 utilities.get("/cv", getCv)

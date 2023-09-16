@@ -22,7 +22,7 @@ export async function register(user: User): Promise<string | null> {
 			}
 
 			const userRes = await collections.users.insertOne({
-				name: user.username,
+				username: user.username,
 				role: "member",
 				password: password,
 			})
@@ -56,7 +56,7 @@ export async function register_admin(user: User): Promise<string | null> {
 			}
 
 			const userRes = await collections.users.insertOne({
-				name: user.username,
+				username: user.username,
 				role: user.role,
 				password: password,
 			})
@@ -83,7 +83,9 @@ export async function login(user: login_creds): Promise<string | null | verified
 			throw new Error("The collection is missing from the database")
 		}
 
-		const foundUser = await collections.users.findOne({ name: user.username })
+		const foundUser = await collections.users.findOne({ username: user.username })
+
+		logger.info(user)
 
 		if(!foundUser) {
 			throw new Error("There is no such user with that username")
@@ -123,7 +125,7 @@ export async function __createAdmin(user: User): Promise<string | null> {
 				}
 
 				const userRes = await collections.users.insertOne({
-					name: user.username,
+					username: user.username,
 					role: user.role,
 					password: password,
 				})

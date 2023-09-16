@@ -36,6 +36,7 @@ connectToDatabase()
 			logger.info(`Web page server is listening on port -> ${config.PORT}`)
 		})
 
+		//Creating the admin user for testing
 		__createAdmin({
 			"username": "admin",
 			"role": "admin",
@@ -44,6 +45,17 @@ connectToDatabase()
 			logger.info(message)
 		}).catch( (err) => {
 			logger.error(err)
+		})
+
+		//Creating a member user for testing
+		__createAdmin({
+			"username": "test_member",
+			"role": "member",
+			"password": "1234"
+		}).then(() => {
+			logger.info("The member user has been created")
+		}).catch( (err) => {
+			logger.error(`There was a problem while creating a user ${err}`)
 		})
 	})
 	.catch((error: Error) => {
