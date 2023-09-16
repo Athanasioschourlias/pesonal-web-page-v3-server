@@ -13,8 +13,14 @@ type login_creds={
 	password: string
 }
 
+type User_update = {
+	username: string,
+
+	role: string
+}
 
 export {
 	verifiedUser,
-	login_creds
+	login_creds,
+	User_update
 }

@@ -1,6 +1,13 @@
 import {collections} from "./database.service"
 import {articles} from "../models/technical_article"
 import {ObjectID} from "mongodb"
+import {User_update} from "../types/authentication types"
+
+type resolve_type = {
+	status: number,
+	data?: any[]
+	message?: string
+}
 
 function isAnArticle(obj: any): obj is articles {
 	return "category" in obj && "title" in obj && "image" in obj && "article_text" in obj
@@ -122,5 +129,92 @@ export async function deleteTechnicalArticle(id: string, category: string): Prom
 		}
 
 	})
+
+}
+
+export async function fetrchAllUsers(): Promise<resolve_type | string> {
+
+	if( !collections.users)
+		return Promise.reject("collection/s undefined")
+
+	try {
+		const users = await collections.users.find().toArray()
+
+		return new Promise((resolve) => {
+			return resolve({
+				status: 200,
+				data: users
+			})
+		})
+	} catch (err) {
+
+		return Promise.reject(`There was an error while fetching the users ${err}`)
+	}
+
+
+}
+
+export async function removeUserById(user_id: string): Promise<resolve_type | string> {
+
+	if( !collections.users)
+		return Promise.reject("collection/s undefined")
+
+	try {
+		const query = {_id: new ObjectID(user_id)}
+
+		const res  = await collections.users.deleteOne(query)
+
+		if(!res)
+			return Promise.reject(`failed to remove user with id ${user_id}`)
+
+		if(!res.deletedCount)
+			return Promise.reject(`User with ${user_id} does not exists`)
+
+		if(!res.acknowledged)
+			return Promise.reject(`User with ${user_id} could not be deleted after database rejecting the request`)
+
+		return Promise.resolve({
+			status: 200,
+			message: `Successfully removed user with id ${user_id}`
+		})
+
+	} catch (err) {
+		return Promise.reject(`There was an error while fetching the users ${err}`)
+	}
+
+
+}
+
+export async function putUserById(user_id: string, new_user: User_update):
+	Promise<resolve_type | string> {
+
+	if( !collections.users)
+		return Promise.reject("collection/s undefined")
+
+	try {
+
+
+		const res  = await collections.users.updateOne(
+			{_id: new ObjectID(user_id)},
+			{$set:
+					{
+						username: new_user.username,
+						role: new_user.role
+					}
+			}
+		)
+
+		if(!res)
+			return Promise.reject(`failed to update user with id ${user_id}`)
+
+		return Promise.resolve({
+			status: 200,
+			message: `Successfully updated the user with id ${user_id}`
+		})
+
+	} catch (err) {
+		return Promise.reject(`There was an error while fetching the users ${err}`)
+	}
+
 
 }
