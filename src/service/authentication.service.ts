@@ -111,7 +111,7 @@ export async function login(user: login_creds): Promise<string | null | verified
 
 export async function __createAdmin(user: User): Promise<string | null> {
 	try {
-		const res = await collections.users?.findOne({ name: user.username })
+		const res = await collections.users?.findOne({ username: user.username })
 
 		if(res) {
 
