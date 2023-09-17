@@ -6,7 +6,6 @@ import {
 
 } from "./controllers/blog.controller"
 import {
-	getAllForms,
 	getCv,
 	health,
 	sendFormResults
@@ -74,8 +73,6 @@ admin.delete("/articles/id",authToken, deleteArticleByid)
 admin.put("/articles/id",authToken, editArticleById)
 
 admin.post("/register", authToken, registerAdmin)
-
-admin.get("/forms",authToken, getAllForms)
 
 admin.get("/users/all",authToken, getAllUsers)
 

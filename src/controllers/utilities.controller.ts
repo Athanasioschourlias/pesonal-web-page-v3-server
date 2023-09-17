@@ -2,7 +2,6 @@ import {Request, Response} from "express"
 import path from "path"
 import {wrapPromise} from "../common/utils"
 import {handleServerError} from "../common/responseHelper"
-import {fetchForms} from "../service/utillities.service"
 import {mailer} from "../service/mailing.service"
 import {form} from "../types/serviceGenericTypes"
 
@@ -28,33 +27,8 @@ export async function sendFormResults(req: Request, res: Response): Promise<void
 		res.status(500).send("No body for the new form provided")
 	}
 
-	//Here we have the functionality in order to store the form, although this is not very GDPR-compliant and creates a vulnerability
-	// const [err, result] = await wrapPromise(storFormToDb(req.body.data as form))
-
-	// if(err || !result) {
-	// 	return handleServerError(res, 500, String(err))
-	// }
-
 
 	const [err, result] = await wrapPromise(mailer(req.body.data as form))
-
-	if(err || !result) {
-		return handleServerError(res, 500, String(err))
-	}
-
-	res.send({
-		satusCode: 200,
-		data: result
-	})
-}
-
-export async function getAllForms(req: Request, res: Response): Promise<void> {
-
-	if(!req.body) {
-		res.status(500).send("No body for the new article provided")
-	}
-
-	const [err, result] = await wrapPromise(fetchForms())
 
 	if(err || !result) {
 		return handleServerError(res, 500, String(err))
